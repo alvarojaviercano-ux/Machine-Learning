@@ -4,10 +4,6 @@
     // For more information, visit: https://go.microsoft.com/fwlink/?linkid=830387
     "version": "0.2.0",
     "configurations": [
-<<<<<<< HEAD
-
-=======
->>>>>>> d0c20246067752f3ea1f4eccbdfbe2162038addb
         {
             "name": "Python Debugger: Flask",
             "type": "debugpy",
@@ -18,13 +14,7 @@
                 "FLASK_DEBUG": "1"
             },
             "args": [
-<<<<<<< HEAD
-                "run",
-                "--no-debugger",
-                "--no-reload"
-=======
                 "run"
->>>>>>> d0c20246067752f3ea1f4eccbdfbe2162038addb
             ],
             "jinja": true,
             "autoStartBrowser": true,
