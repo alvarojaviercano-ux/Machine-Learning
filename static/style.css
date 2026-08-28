@@ -57,3 +57,11 @@ footer {
     color: #4a5c50;
     font-size: 0.9rem;
 }
+
+section img {
+    display: block;
+    max-width: 100%;
+    width: 600px;
+    margin: 20px auto;
+    border-radius: 12px;
+}
