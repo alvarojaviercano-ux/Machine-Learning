@@ -1,0 +1,132 @@
+{% extends "base.html" %}
+{% block title %}Concepts — Data with Roots{% endblock %}
+
+{% block content %}
+<h1 class="mb-4">Machine Learning — Concepts</h1>
+
+<div class="row g-4 mb-5">
+    <div class="col-md-6">
+        <div class="card h-100 shadow-sm border-primary">
+            <div class="card-body">
+                <h5 class="card-title text-primary">What is Machine Learning?</h5>
+                <p class="card-text">
+                    Machine Learning (ML) is a branch of artificial intelligence in which computers
+                    learn from data instead of following explicit, hand-written rules.
+                    Rather than coding a rule for every possible case, we feed the model examples,
+                    and it discovers the patterns needed to make predictions on its own.
+                </p>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-6">
+        <div class="card h-100 shadow-sm border-primary">
+            <div class="card-body">
+                <h5 class="card-title text-primary">Main Purpose</h5>
+                <p class="card-text">
+                    The main purpose of Machine Learning is to build systems that improve their
+                    performance on a task through experience with data, generalizing what they
+                    learned to make accurate predictions on new, unseen cases.
+                </p>
+            </div>
+        </div>
+    </div>
+</div>
+
+<h3 class="mb-3">Data, Training, Models, and Predictions</h3>
+<div class="accordion mb-5" id="conceptsAccordion">
+
+    <div class="accordion-item">
+        <h2 class="accordion-header">
+            <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapseData">
+                Data
+            </button>
+        </h2>
+        <div id="collapseData" class="accordion-collapse collapse show" data-bs-parent="#conceptsAccordion">
+            <div class="accordion-body">
+                Data is the raw material of Machine Learning: examples, measurements, or records
+                that describe the problem. The quality and amount of data directly determine how
+                well a model can learn.
+            </div>
+        </div>
+    </div>
+
+    <div class="accordion-item">
+        <h2 class="accordion-header">
+            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseTraining">
+                Training
+            </button>
+        </h2>
+        <div id="collapseTraining" class="accordion-collapse collapse" data-bs-parent="#conceptsAccordion">
+            <div class="accordion-body">
+                Training is the process where the model looks at data repeatedly, compares its
+                predictions to the real answers, and adjusts itself to reduce its errors.
+            </div>
+        </div>
+    </div>
+
+    <div class="accordion-item">
+        <h2 class="accordion-header">
+            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseModel">
+                Model
+            </button>
+        </h2>
+        <div id="collapseModel" class="accordion-collapse collapse" data-bs-parent="#conceptsAccordion">
+            <div class="accordion-body">
+                A model is the mathematical representation the algorithm builds during training.
+                Once trained, it captures the patterns found in the data and can be reused to make
+                predictions.
+            </div>
+        </div>
+    </div>
+
+    <div class="accordion-item">
+        <h2 class="accordion-header">
+            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapsePrediction">
+                Prediction
+            </button>
+        </h2>
+        <div id="collapsePrediction" class="accordion-collapse collapse" data-bs-parent="#conceptsAccordion">
+            <div class="accordion-body">
+                A prediction is the output the model generates when given new data it has never
+                seen before — the practical result of everything it learned during training.
+            </div>
+        </div>
+    </div>
+
+</div>
+
+<div class="alert alert-primary" role="alert">
+    <h5 class="alert-heading">Why Data Matters</h5>
+    Data is the foundation of every Machine Learning system. Without enough relevant, good-quality
+    data, a model cannot find meaningful patterns — and its predictions become unreliable, no
+    matter how advanced the algorithm is.
+</div>
+
+<h3 class="mb-3">Simple Examples of Machine Learning</h3>
+<div class="row g-3">
+    <div class="col-md-4">
+        <div class="card h-100">
+            <div class="card-body">
+                <h6 class="card-title">Spam Detection</h6>
+                <p class="card-text small">Classifying emails as spam or not spam based on their content.</p>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-4">
+        <div class="card h-100">
+            <div class="card-body">
+                <h6 class="card-title">Movie Recommendations</h6>
+                <p class="card-text small">Suggesting content based on what a user previously watched.</p>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-4">
+        <div class="card h-100">
+            <div class="card-body">
+                <h6 class="card-title">Price Prediction</h6>
+                <p class="card-text small">Estimating house prices from features like size or location.</p>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

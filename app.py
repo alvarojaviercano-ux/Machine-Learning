@@ -10,7 +10,7 @@ def home():
 
 @app.route('/concepts')
 def concepts():
-    return render_template('coming_soon.html', page_name="Concepts")
+    return render_template('concepts.html', page_name="Concepts")
 
 
 @app.route('/types')
