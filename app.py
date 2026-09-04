@@ -15,7 +15,7 @@ def concepts():
 
 @app.route('/types')
 def types():
-    return render_template('coming_soon.html', page_name="Types of Machine Learning")
+    return render_template('types.html')
 
 
 @app.route('/usecase/<int:n>')
