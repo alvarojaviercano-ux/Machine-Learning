@@ -1,6 +1,47 @@
-from flask import Flask, render_template
+import io
+import base64
+
+import matplotlib
+matplotlib.use('Agg')
+import matplotlib.pyplot as plt
+
+import pandas as pd
+from flask import Flask, render_template, request
+
+from model import df, model, calculate_price
 
 app = Flask(__name__)
+
+
+def generate_plot(predicted_point=None):
+    """Builds the scatter plot + regression line, returns it as a base64 PNG string."""
+    fig, ax = plt.subplots(figsize=(7, 5))
+
+    ax.scatter(df['square_meters'], df['price'],
+               alpha=0.4, color='#4C3BCF', label='Housing data')
+
+    x_line = pd.DataFrame({
+        'square_meters': [df['square_meters'].min(), df['square_meters'].max()]
+    })
+    y_line = model.predict(x_line)
+    ax.plot(x_line['square_meters'], y_line, color='#E8604C', linewidth=2.5, label='Regression line')
+
+    if predicted_point:
+        ax.scatter([predicted_point[0]], [predicted_point[1]],
+                   color='#2e7d4f', s=140, zorder=5, marker='*', label='Your prediction')
+
+    ax.set_title('House Price vs. Square Meters')
+    ax.set_xlabel('Square Meters (m²)')
+    ax.set_ylabel('Price (USD)')
+    ax.legend()
+    fig.tight_layout()
+
+    buf = io.BytesIO()
+    fig.savefig(buf, format='png')
+    buf.seek(0)
+    encoded = base64.b64encode(buf.getvalue()).decode('utf-8')
+    plt.close(fig)
+    return encoded
 
 
 USE_CASES = {
@@ -67,10 +108,43 @@ def regression_concepts():
     return render_template('regression_concepts.html')
 
 
-@app.route('/regression/application')
+@app.route('/regression/application', methods=['GET', 'POST'])
 def regression_application():
-    return render_template('coming_soon.html', page_name="Linear Regression - Application")
+    prediction = None
+    error = None
+    input_value = None
+
+    if request.method == 'POST':
+        input_value = request.form.get('square_meters', '').strip()
+
+        if not input_value:
+            error = "Please enter a value."
+        else:
+            try:
+                sqm = float(input_value)
+                if sqm <= 0:
+                    error = "Please enter a positive number."
+                else:
+                    predicted_price = calculate_price(sqm)
+                    prediction = round(predicted_price, 2)
+            except ValueError:
+                error = "Please enter a valid numeric value."
+
+    chart_point = (float(input_value), prediction) if (prediction is not None and input_value) else None
+    chart_base64 = generate_plot(predicted_point=chart_point)
+
+    return render_template(
+        'regression_application.html',
+        chart_base64=chart_base64,
+        prediction=prediction,
+        error=error,
+        input_value=input_value,
+        record_count=len(df),
+        coef=round(model.coef_[0][0], 2),
+        intercept=round(model.intercept_[0], 2),
+    )
 
 
 if __name__ == '__main__':
     app.run(debug=True)
+    
