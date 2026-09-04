@@ -64,7 +64,7 @@ def usecase(n):
 
 @app.route('/regression/concepts')
 def regression_concepts():
-    return render_template('coming_soon.html', page_name="Linear Regression - Concepts")
+    return render_template('regression_concepts.html')
 
 
 @app.route('/regression/application')

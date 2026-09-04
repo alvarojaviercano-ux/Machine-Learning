@@ -1,0 +1,77 @@
+{% extends "base.html" %}
+{% block title %}Linear Regression — Concepts{% endblock %}
+
+{% block content %}
+<h1 class="mb-4">Linear Regression — Concepts</h1>
+
+<div class="card shadow-sm mb-4">
+    <div class="card-body">
+        <h5 class="card-title">What is Linear Regression?</h5>
+        <p class="card-text">
+            Linear Regression is a supervised Machine Learning algorithm used to predict a
+            numeric value based on the relationship between two (or more) variables. It works
+            by finding the straight line that best fits the pattern observed in the data.
+        </p>
+    </div>
+</div>
+
+<div class="row g-4 mb-4">
+    <div class="col-md-6">
+        <div class="card h-100 shadow-sm border-primary">
+            <div class="card-body">
+                <h6 class="card-title text-primary">Independent Variable (X)</h6>
+                <p class="card-text">The input used to make the prediction — the value you already know.</p>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-6">
+        <div class="card h-100 shadow-sm border-success">
+            <div class="card-body">
+                <h6 class="card-title text-success">Dependent Variable (Y)</h6>
+                <p class="card-text">The value the model tries to predict, based on X.</p>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="card shadow-sm mb-4">
+    <div class="card-body">
+        <h5 class="card-title">Types of Problems It Can Solve</h5>
+        <p class="card-text">
+            Any problem where you need to estimate a continuous numeric value from another
+            related variable — for example, predicting sales from advertising spend, or a
+            person's salary from years of experience.
+        </p>
+    </div>
+</div>
+
+<div class="card shadow-sm mb-4">
+    <div class="card-body">
+        <h5 class="card-title">Relationship Between Variables &amp; the Regression Line</h5>
+        <p class="card-text">
+            When X and Y are related, plotting them produces a pattern — often a roughly
+            straight trend. The <strong>regression line</strong> is the single line that
+            minimizes the overall distance between itself and every real data point,
+            capturing that trend mathematically as <code>Y = mX + b</code>.
+        </p>
+    </div>
+</div>
+
+<div class="alert alert-primary">
+    <h6 class="alert-heading">Prediction</h6>
+    Once the line is found, predicting is simple: plug in a new X value, and the line
+    gives you the corresponding Y — the model's estimate.
+</div>
+
+<div class="card shadow-sm">
+    <div class="card-header bg-dark text-white">Simple Example</div>
+    <div class="card-body">
+        <p class="card-text mb-0">
+            If houses of 50 m² tend to sell for $50,000 and houses of 100 m² tend to sell
+            for $95,000, a regression line captures that trend — so it could estimate that
+            a 75 m² house sells for around $72,500, even without an exact matching example
+            in the data.
+        </p>
+    </div>
+</div>
+{% endblock %}
