@@ -1,0 +1,78 @@
+{% extends "base.html" %}
+{% block title %}Types of Machine Learning — Data with Roots{% endblock %}
+
+{% block content %}
+<h1 class="mb-4">Types of Machine Learning</h1>
+
+<div class="accordion" id="typesAccordion">
+
+    <div class="accordion-item">
+        <h2 class="accordion-header">
+            <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapseSup">
+                <span class="badge bg-primary me-2">A</span> Supervised Learning
+            </button>
+        </h2>
+        <div id="collapseSup" class="accordion-collapse collapse show" data-bs-parent="#typesAccordion">
+            <div class="accordion-body">
+                <p><strong>Definition:</strong> The model is trained using labeled data — meaning
+                    every example includes both the input and the correct answer.</p>
+                <p><strong>Main characteristics:</strong> Requires a labeled dataset; the model
+                    learns by comparing its predictions against known correct answers and
+                    correcting its errors.</p>
+                <p class="mb-1"><strong>Types of problems it solves:</strong></p>
+                <ul>
+                    <li><strong>Classification:</strong> assigns data into categories, such as
+                        detecting spam emails or recognizing objects in photos.</li>
+                    <li><strong>Regression:</strong> predicts numeric values, such as house prices
+                        or temperature.</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+
+    <div class="accordion-item">
+        <h2 class="accordion-header">
+            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseUnsup">
+                <span class="badge bg-danger me-2">B</span> Unsupervised Learning
+            </button>
+        </h2>
+        <div id="collapseUnsup" class="accordion-collapse collapse" data-bs-parent="#typesAccordion">
+            <div class="accordion-body">
+                <p><strong>Definition:</strong> The model receives data with no labels or correct
+                    answers, and must find hidden structure on its own.</p>
+                <p><strong>Main characteristics:</strong> No labeled data is required; the model
+                    identifies similarities and groups or patterns among the examples.</p>
+                <p class="mb-1"><strong>Types of problems it solves:</strong></p>
+                <ul>
+                    <li><strong>Clustering:</strong> groups similar items together, such as
+                        segmenting types of customers.</li>
+                    <li><strong>Dimensionality Reduction:</strong> simplifies large datasets by
+                        keeping only their most relevant features.</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+
+    <div class="accordion-item">
+        <h2 class="accordion-header">
+            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseReinf">
+                <span class="badge bg-warning text-dark me-2">C</span> Reinforcement Learning
+            </button>
+        </h2>
+        <div id="collapseReinf" class="accordion-collapse collapse" data-bs-parent="#typesAccordion">
+            <div class="accordion-body">
+                <p><strong>Definition:</strong> An agent learns by interacting with an environment,
+                    taking actions, and receiving rewards or penalties based on the outcome.</p>
+                <p><strong>Main characteristics:</strong> Learning happens through trial and error,
+                    guided by a reward signal rather than labeled examples.</p>
+                <p class="mb-1"><strong>Types of problems it solves:</strong></p>
+                <ul>
+                    <li>Sequential decision-making problems, such as self-driving cars, robotics
+                        control, and game-playing agents like chess or Go.</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+
+</div>
+{% endblock %}

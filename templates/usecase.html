@@ -1,0 +1,63 @@
+{% extends "base.html" %}
+{% block title %}Use Case {{ n }} — Data with Roots{% endblock %}
+
+{% block content %}
+<h1 class="mb-1">Use Case {{ n }}</h1>
+<h4 class="text-muted mb-4">{{ case.name }}</h4>
+
+<div class="card shadow-sm mb-4">
+    <div class="card-header bg-dark text-white">Problem Context</div>
+    <div class="card-body">
+        <p class="card-text">{{ case.context }}</p>
+    </div>
+</div>
+
+<div class="row g-4">
+    <div class="col-md-6">
+        <div class="card h-100 shadow-sm">
+            <div class="card-header">Data That Could Be Used</div>
+            <div class="card-body">
+                <p class="card-text">{{ case.data }}</p>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-6">
+        <div class="card h-100 shadow-sm">
+            <div class="card-header">What the Model Should Discover</div>
+            <div class="card-body">
+                <p class="card-text">{{ case.target }}</p>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="row g-4 mt-1">
+    <div class="col-md-6">
+        <div class="card h-100 shadow-sm border-primary">
+            <div class="card-body">
+                <h6 class="card-title text-primary">Type of Machine Learning</h6>
+                <p class="card-text">{{ case.ml_type }}</p>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-6">
+        <div class="card h-100 shadow-sm border-success">
+            <div class="card-body">
+                <h6 class="card-title text-success">Potential Benefit</h6>
+                <p class="card-text">{{ case.benefit }}</p>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="d-flex justify-content-between mt-5">
+    {% if n > 1 %}
+        <a href="{{ url_for('usecase', n=n-1) }}" class="btn btn-outline-secondary">&laquo; Use Case {{ n-1 }}</a>
+    {% else %}
+        <span></span>
+    {% endif %}
+    {% if n < 4 %}
+        <a href="{{ url_for('usecase', n=n+1) }}" class="btn btn-outline-secondary">Use Case {{ n+1 }} &raquo;</a>
+    {% endif %}
+</div>
+{% endblock %}

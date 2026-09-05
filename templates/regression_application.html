@@ -1,0 +1,88 @@
+{% extends "base.html" %}
+{% block title %}Linear Regression — Application{% endblock %}
+
+{% block content %}
+<h1 class="mb-4">Linear Regression — Application</h1>
+
+<div class="card shadow-sm mb-4">
+    <div class="card-header bg-dark text-white">Problem Context</div>
+    <div class="card-body">
+        <p class="card-text">
+            Real estate buyers and sellers need a quick way to estimate a fair house price.
+            This application uses a Simple Linear Regression model to predict the
+            <strong>price</strong> of a house based on its <strong>size in square meters</strong>,
+            learning the relationship directly from historical housing data.
+        </p>
+    </div>
+</div>
+
+<div class="row g-4 mb-4">
+    <div class="col-md-6">
+        <div class="card h-100 shadow-sm border-primary">
+            <div class="card-body">
+                <h6 class="card-title text-primary">Independent Variable (X)</h6>
+                <p class="card-text">Square meters of the house (m²)</p>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-6">
+        <div class="card h-100 shadow-sm border-success">
+            <div class="card-body">
+                <h6 class="card-title text-success">Dependent Variable (Y)</h6>
+                <p class="card-text">Price of the house (USD)</p>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="card shadow-sm mb-4">
+    <div class="card-header">Dataset</div>
+    <div class="card-body">
+        <ul class="mb-0">
+            <li><strong>Number of records:</strong> {{ record_count }}</li>
+            <li><strong>Independent variable:</strong> square_meters (m²)</li>
+            <li><strong>Dependent variable:</strong> price (USD)</li>
+            <li><strong>Source:</strong> Synthetic dataset generated for academic purposes, simulating a realistic price-per-square-meter relationship with random noise.</li>
+        </ul>
+    </div>
+</div>
+
+<div class="card shadow-sm mb-4">
+    <div class="card-header">Data Visualization</div>
+    <div class="card-body text-center">
+        <img src="data:image/png;base64,{{ chart_base64 }}" class="img-fluid" alt="Scatter plot of square meters vs price with regression line">
+    </div>
+</div>
+
+<div class="card shadow-sm">
+    <div class="card-header bg-primary text-white">Try the Model — Prediction Form</div>
+    <div class="card-body">
+        <form method="POST" class="row g-3 align-items-end">
+            <div class="col-md-6">
+                <label for="square_meters" class="form-label">Enter square meters</label>
+                <input
+                    type="text"
+                    class="form-control {% if error %}is-invalid{% endif %}"
+                    id="square_meters"
+                    name="square_meters"
+                    value="{{ input_value or '' }}"
+                    placeholder="e.g. 90">
+                {% if error %}
+                    <div class="invalid-feedback">{{ error }}</div>
+                {% endif %}
+            </div>
+            <div class="col-md-3">
+                <button type="submit" class="btn btn-primary w-100">Predict Price</button>
+            </div>
+        </form>
+
+        {% if prediction is not none %}
+        <div class="alert alert-success mt-4 mb-0">
+            <h5 class="alert-heading mb-1">Predicted Price</h5>
+            <p class="mb-0">A house of <strong>{{ input_value }} m²</strong> is estimated to cost approximately
+            <strong>${{ "{:,.2f}".format(prediction) }}</strong>.</p>
+        </div>
+        {% endif %}
+    </div>
+</div>
+{% endblock %}
