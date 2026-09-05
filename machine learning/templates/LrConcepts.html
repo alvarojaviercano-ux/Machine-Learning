@@ -1,0 +1,54 @@
+{% extends "base.html" %}
+{% block title %}Linear Regression Concepts{% endblock %}
+{% block content %}
+    <h1>Linear Regression - Concepts</h1>
+
+    <h2>What is Linear Regression?</h2>
+    <p>
+        Linear Regression is a simple Machine Learning method used to predict a number
+        based on another number. It finds a straight line that fits the data as well as possible.
+    </p>
+
+    <h2>What types of problems can it solve?</h2>
+    <p>
+        Linear Regression is used when we want to predict a number, not a category.
+        For example, predicting a price, a temperature, or a distance.
+    </p>
+
+    <h2>Independent Variable</h2>
+    <p>
+        This is the input value we already know. We use it to make the prediction.
+        It is usually called "X".
+    </p>
+
+    <h2>Dependent Variable</h2>
+    <p>
+        This is the value we want to predict. It depends on the independent variable.
+        It is usually called "Y".
+    </p>
+
+    <h2>Relationship Between Variables</h2>
+    <p>
+        Linear Regression assumes that when X changes, Y changes in a steady way.
+        For example, more area usually means a higher price.
+    </p>
+
+    <h2>Regression Line</h2>
+    <p>
+        This is the straight line the model creates after learning from the data.
+        It shows the general pattern between X and Y, even if the real data points do not fall exactly on the line.
+    </p>
+
+    <h2>Prediction</h2>
+    <p>
+        Once the model has the regression line, we can give it a new X value,
+        and it will return a Y value using that line. This is the prediction.
+    </p>
+
+    <h2>Simple Example</h2>
+    <p>
+        If we know the area of many houses and their prices, Linear Regression can learn the
+        pattern between area and price. Then, if we give it a new area, it can predict the price
+        for that house.
+    </p>
+{% endblock %}

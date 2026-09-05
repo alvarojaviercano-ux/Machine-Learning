@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}Data with Roots{% endblock %}</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+
+    <nav>
+        <a href="{{ url_for('home') }}">Home</a>
+
+        <div class="dropdown">
+            <span>Machine Learning</span>
+            <div class="dropdown-content">
+                <a href="{{ url_for('ml_concepts') }}">Concepts</a>
+                <a href="{{ url_for('ml_types') }}">Types of Machine Learning</a>
+                <div class="dropdown-submenu">
+                    <span>Use Cases</span>
+                    <div class="dropdown-content">
+                        <a href="{{ url_for('use_case1') }}">Use Case 1</a>
+                        <a href="{{ url_for('use_case2') }}">Use Case 2</a>
+                        <a href="{{ url_for('use_case3') }}">Use Case 3</a>
+                        <a href="{{ url_for('use_case4') }}">Use Case 4</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="dropdown">
+            <span>Supervised </span>
+            <div class="dropdown-content">
+                <span>Linear Regression</span>
+                <a href="{{ url_for('lr_concepts') }}">Concepts</a>
+                <a href="{{ url_for('lr_application') }}">Application</a>
+            </div>
+        </div>
+    </nav>
+
+    <main>
+        {% block content %}
+        {% endblock %}
+    </main>
+
+</body>
+</html>

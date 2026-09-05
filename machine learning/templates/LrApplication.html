@@ -1,0 +1,31 @@
+{% extends "base.html" %}
+{% block title %}Linear Regression Application{% endblock %}
+{% block content %}
+    <h1>House Price Predictor</h1>
+
+    <h2>Problem Context</h2>
+    <p>This application predicts house prices based on their area in square meters, using a Simple Linear Regression model.</p>
+
+    <h2>Dataset Information</h2>
+    <ul>
+        <li><strong>Number of records:</strong> {{ dataset_info.num_records }}</li>
+        <li><strong>Independent Variable (X):</strong> {{ dataset_info.independent_var }} ({{ dataset_info.independent_unit }})</li>
+        <li><strong>Dependent Variable (Y):</strong> {{ dataset_info.dependent_var }} ({{ dataset_info.dependent_unit }})</li>
+        <li><strong>Data source:</strong> {{ dataset_info.source }}</li>
+    </ul>
+
+    <h2>Prediction Form</h2>
+    <form action="{{ url_for('predecir') }}" method="POST">
+        <label for="area">Area (m²):</label>
+        <input type="number" id="area" name="area" step="any" required>
+        <button type="submit">Calculate Price</button>
+    </form>
+
+    {% if error %}
+        <p style="color: red;">{{ error }}</p>
+    {% endif %}
+
+    {% if result is not none %}
+        <h2>Estimated Price: ${{ "{:,.0f}".format(result) }}</h2>
+    {% endif %}
+{% endblock %}

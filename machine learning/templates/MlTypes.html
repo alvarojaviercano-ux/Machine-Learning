@@ -1,0 +1,34 @@
+{% extends "base.html" %}
+{% block title %}Types of ML{% endblock %}
+{% block content %}
+    <h1>Main Types of Machine Learning</h1>
+
+    <h3>A. Supervised Learning</h3>
+    <p>
+        In supervised learning, the algorithm is trained using a labeled dataset.
+        This means the input data comes with the correct answers (labels).
+    </p>
+    <ul>
+        <li><strong>Classification:</strong> Assigns categories to data (e.g., detecting spam emails or recognizing objects in images).</li>
+        <li><strong>Regression:</strong> Predicts continuous numerical values (e.g., estimating house prices based on size and location).</li>
+    </ul>
+
+    <h3>B. Unsupervised Learning</h3>
+    <p>
+        The model works with unlabeled data. The main goal is to discover hidden patterns,
+        structures, or relationships without human guidance.
+    </p>
+    <ul>
+        <li><strong>Clustering:</strong> Groups similar items together (e.g., segmenting customers based on buying behavior).</li>
+        <li><strong>Dimensionality Reduction:</strong> Simplifies complex datasets while keeping essential features.</li>
+    </ul>
+
+    <h3>C. Reinforcement Learning</h3>
+    <p>
+        An agent learns by interacting with an environment through trial and error.
+        It receives rewards for correct decisions and penalties for mistakes.
+    </p>
+    <ul>
+        <li><strong>Applications:</strong> Self-driving cars, robotics, and game-playing systems like chess or Go.</li>
+    </ul>
+{% endblock %}
