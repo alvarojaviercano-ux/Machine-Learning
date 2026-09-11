@@ -1,0 +1,104 @@
+{% extends "base.html" %}
+{% block title %}K-Nearest Neighbors — Evaluation Metrics{% endblock %}
+
+{% block content %}
+<h1 class="mb-4">K-Nearest Neighbors — Evaluation Metrics</h1>
+
+<div class="card shadow-sm mb-4">
+    <div class="card-header bg-dark text-white">How we tested the model</div>
+    <div class="card-body mb-0">
+        <p class="card-text mb-0">
+            We used 80% of the data to train the model, and kept the other 20% to test it. The
+            numbers below compare the model's guesses on that 20% against the real skill levels,
+            which the model never saw during training.
+        </p>
+    </div>
+</div>
+
+<div class="row g-4 mb-4">
+    <div class="col-md-3">
+        <div class="card h-100 shadow-sm text-center">
+            <div class="card-body">
+                <h6 class="card-title text-muted">Accuracy</h6>
+                <p class="display-6 mb-0">{{ accuracy }}%</p>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-3">
+        <div class="card h-100 shadow-sm text-center">
+            <div class="card-body">
+                <h6 class="card-title text-muted">Precision</h6>
+                <p class="display-6 mb-0">{{ precision }}%</p>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-3">
+        <div class="card h-100 shadow-sm text-center">
+            <div class="card-body">
+                <h6 class="card-title text-muted">Recall</h6>
+                <p class="display-6 mb-0">{{ recall }}%</p>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-3">
+        <div class="card h-100 shadow-sm text-center">
+            <div class="card-body">
+                <h6 class="card-title text-muted">F1-Score</h6>
+                <p class="display-6 mb-0">{{ f1 }}%</p>
+            </div>
+        </div>
+    </div>
+</div>
+
+<p class="text-muted mb-4">
+    Since there are 3 levels instead of just 2, Precision, Recall, and F1-Score are the average
+    across all three groups.
+</p>
+
+<div class="card shadow-sm mb-4">
+    <div class="card-header">Confusion Matrix</div>
+    <div class="card-body">
+        <p class="card-text">
+            Rows show the <strong>real</strong> level, columns show what the model
+            <strong>guessed</strong>. The numbers on the diagonal are correct guesses.
+        </p>
+        <table class="table table-bordered text-center mb-0">
+            <thead class="table-light">
+                <tr>
+                    <th>Real \ Guessed</th>
+                    {% for name in level_names %}
+                    <th>{{ name }}</th>
+                    {% endfor %}
+                </tr>
+            </thead>
+            <tbody>
+                {% for row in conf_matrix %}
+                <tr>
+                    <th class="table-light">{{ level_names[loop.index0] }}</th>
+                    {% for value in row %}
+                    <td>{{ value }}</td>
+                    {% endfor %}
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+        <p class="card-text mt-3 mb-0">
+            Since this model has <strong>3 groups</strong> instead of 2, True Positives, True
+            Negatives, False Positives, and False Negatives are counted separately for each
+            group. For example, for "Advanced": a True Positive is a cyclist correctly guessed
+            as Advanced, and a False Negative is an Advanced cyclist the model guessed wrong.
+        </p>
+    </div>
+</div>
+
+<div class="card shadow-sm">
+    <div class="card-header">What this means</div>
+    <div class="card-body mb-0">
+        <p class="card-text mb-0">
+            <em>[Write here, in your own words: which levels does the model mix up the most
+            (look at the numbers outside the diagonal)? Is {{ accuracy }}% accuracy good enough
+            for a model with 3 possible answers?]</em>
+        </p>
+    </div>
+</div>
+{% endblock %}
