@@ -1,0 +1,117 @@
+{% extends "base.html" %}
+{% block title %}Logistic Regression — Concepts{% endblock %}
+
+{% block content %}
+<h1 class="mb-4">Logistic Regression — Concepts</h1>
+
+<div class="card shadow-sm mb-4">
+    <div class="card-header bg-dark text-white">What is Logistic Regression?</div>
+    <div class="card-body">
+        <p class="card-text mb-0">
+            Logistic Regression is a model that answers yes/no questions. Instead of guessing a
+            number (like a price), it guesses which of <strong>two groups</strong> something
+            belongs to — for example, "will buy" or "will not buy".
+        </p>
+    </div>
+</div>
+
+<div class="card shadow-sm mb-4">
+    <div class="card-header">Why is it called a classification model?</div>
+    <div class="card-body mb-0">
+        <p class="card-text mb-0">
+            The name has "regression" in it, but it is used for <strong>classification</strong>.
+            The model first calculates a probability (a number between 0 and 1), and then uses
+            that number to decide the final answer: yes or no.
+        </p>
+    </div>
+</div>
+
+<div class="card shadow-sm mb-4">
+    <div class="card-header">What is Binary Classification?</div>
+    <div class="card-body mb-0">
+        <p class="card-text mb-0">
+            "Binary" means there are only <strong>two possible answers</strong> — for example,
+            0 = No Purchase and 1 = Purchase. The model looks at the data and learns how to
+            separate the two groups.
+        </p>
+    </div>
+</div>
+
+<div class="row g-4 mb-4">
+    <div class="col-md-4">
+        <div class="card h-100 shadow-sm border-primary">
+            <div class="card-body">
+                <h6 class="card-title text-primary">Independent Variable(s)</h6>
+                <p class="card-text mb-0">
+                    The information we use to make a guess. For example: how long someone spent
+                    on the website, or their monthly income.
+                </p>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-4">
+        <div class="card h-100 shadow-sm border-success">
+            <div class="card-body">
+                <h6 class="card-title text-success">Dependent / Target Variable</h6>
+                <p class="card-text mb-0">
+                    The answer we want the model to guess. In this case: did the customer buy
+                    something or not.
+                </p>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-4">
+        <div class="card h-100 shadow-sm border-warning">
+            <div class="card-body">
+                <h6 class="card-title text-warning">Classes / Labels</h6>
+                <p class="card-text mb-0">
+                    The possible answers. Since this is binary classification, there are only two:
+                    0 and 1.
+                </p>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="row g-4 mb-4">
+    <div class="col-md-6">
+        <div class="card h-100 shadow-sm border-primary">
+            <div class="card-body">
+                <h6 class="card-title text-primary">Probability</h6>
+                <p class="card-text mb-0">
+                    The model turns the input data into a number between 0 and 1. This number
+                    shows <strong>how likely</strong> it is that the answer is "yes" (class 1).
+                </p>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-6">
+        <div class="card h-100 shadow-sm border-success">
+            <div class="card-body">
+                <h6 class="card-title text-success">Classification Threshold</h6>
+                <p class="card-text mb-0">
+                    To turn that probability into a final answer, we use a cutoff point, usually
+                    <strong>0.5</strong>. If the probability is above 0.5, the answer is "yes" (1).
+                    If it's below, the answer is "no" (0).
+                </p>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="card shadow-sm">
+    <div class="card-header">Linear Regression vs. Logistic Regression</div>
+    <div class="card-body mb-0">
+        <table class="table table-sm mb-0">
+            <thead>
+                <tr><th></th><th>Linear Regression</th><th>Logistic Regression</th></tr>
+            </thead>
+            <tbody>
+                <tr><td>What it predicts</td><td>A number</td><td>A yes/no answer</td></tr>
+                <tr><td>Output range</td><td>Any number</td><td>Between 0 and 1</td></tr>
+                <tr><td>Example</td><td>The price of a house</td><td>Will this customer buy?</td></tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+{% endblock %}

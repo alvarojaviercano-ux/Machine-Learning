@@ -1,0 +1,131 @@
+{% extends "base.html" %}
+{% block title %}Logistic Regression — Application{% endblock %}
+
+{% block content %}
+<h1 class="mb-4">Logistic Regression — Application</h1>
+
+<div class="card shadow-sm mb-4">
+    <div class="card-header bg-dark text-white">The Problem</div>
+    <div class="card-body">
+        <p class="card-text mb-0">
+            Online stores want to know if a visitor is likely to buy something. This page uses
+            a Logistic Regression model to guess if a customer <strong>will buy or not</strong>,
+            based on their profile and how they use the website.
+        </p>
+    </div>
+</div>
+
+<div class="row g-4 mb-4">
+    <div class="col-md-6">
+        <div class="card h-100 shadow-sm border-primary">
+            <div class="card-body">
+                <h6 class="card-title text-primary">Input Data (X)</h6>
+                <ul class="card-text mb-0">
+                    <li>Age</li>
+                    <li>Monthly income</li>
+                    <li>Website visits per month</li>
+                    <li>Time spent on site (minutes)</li>
+                    <li>Previous purchases</li>
+                    <li>Used a discount code (yes/no)</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-6">
+        <div class="card h-100 shadow-sm border-success">
+            <div class="card-body">
+                <h6 class="card-title text-success">What we are guessing (Y)</h6>
+                <p class="card-text mb-0">Purchase — Yes (1) or No (0)</p>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="card shadow-sm mb-4">
+    <div class="card-header">Dataset</div>
+    <div class="card-body">
+        <ul class="mb-0">
+            <li><strong>Number of records:</strong> {{ record_count }}</li>
+            <li><strong>Input data:</strong> age, monthly income, website visits, time on site, previous purchases, discount code</li>
+            <li><strong>What we predict:</strong> Purchase (yes/no)</li>
+            <li><strong>Meaning:</strong> 0 = the customer did not buy, 1 = the customer bought</li>
+            <li><strong>Source:</strong> Dataset given by the instructor.</li>
+        </ul>
+    </div>
+</div>
+
+<div class="card shadow-sm mb-4">
+    <div class="card-header">Chart</div>
+    <div class="card-body text-center">
+        <img src="data:image/png;base64,{{ chart_base64 }}" class="img-fluid" alt="Scatter plot of customers grouped by purchase class">
+    </div>
+</div>
+
+<div class="card shadow-sm">
+    <div class="card-header bg-primary text-white">Try It — Prediction Form</div>
+    <div class="card-body">
+        <form method="POST" class="row g-3 align-items-end">
+
+            <div class="col-md-4">
+                <label for="edad" class="form-label">Age</label>
+                <input type="text" class="form-control {% if error %}is-invalid{% endif %}"
+                       id="edad" name="edad"
+                       value="{{ form_values.edad or '' }}" placeholder="e.g. 35">
+            </div>
+
+            <div class="col-md-4">
+                <label for="ingreso_mensual" class="form-label">Monthly income</label>
+                <input type="text" class="form-control {% if error %}is-invalid{% endif %}"
+                       id="ingreso_mensual" name="ingreso_mensual"
+                       value="{{ form_values.ingreso_mensual or '' }}" placeholder="e.g. 3500000">
+            </div>
+
+            <div class="col-md-4">
+                <label for="visitas_web_mes" class="form-label">Website visits/month</label>
+                <input type="text" class="form-control {% if error %}is-invalid{% endif %}"
+                       id="visitas_web_mes" name="visitas_web_mes"
+                       value="{{ form_values.visitas_web_mes or '' }}" placeholder="e.g. 15">
+            </div>
+
+            <div class="col-md-4">
+                <label for="tiempo_sitio_min" class="form-label">Time on site (min)</label>
+                <input type="text" class="form-control {% if error %}is-invalid{% endif %}"
+                       id="tiempo_sitio_min" name="tiempo_sitio_min"
+                       value="{{ form_values.tiempo_sitio_min or '' }}" placeholder="e.g. 10.5">
+            </div>
+
+            <div class="col-md-4">
+                <label for="compras_previas" class="form-label">Previous purchases</label>
+                <input type="text" class="form-control {% if error %}is-invalid{% endif %}"
+                       id="compras_previas" name="compras_previas"
+                       value="{{ form_values.compras_previas or '' }}" placeholder="e.g. 3">
+            </div>
+
+            <div class="col-md-4">
+                <label for="descuento_usado" class="form-label">Used a discount code?</label>
+                <select class="form-select {% if error %}is-invalid{% endif %}"
+                        id="descuento_usado" name="descuento_usado">
+                    <option value="" {% if not form_values.descuento_usado %}selected{% endif %}>Select...</option>
+                    <option value="1" {% if form_values.descuento_usado == '1' %}selected{% endif %}>Yes</option>
+                    <option value="0" {% if form_values.descuento_usado == '0' %}selected{% endif %}>No</option>
+                </select>
+            </div>
+
+            <div class="col-md-4">
+                <button type="submit" class="btn btn-primary w-100">Predict</button>
+            </div>
+
+            {% if error %}
+                <div class="text-danger mt-2">{{ error }}</div>
+            {% endif %}
+        </form>
+
+        {% if prediction_label %}
+        <div class="alert {% if prediction_label == 'Will buy' %}alert-success{% else %}alert-secondary{% endif %} mt-4 mb-0">
+            <h5 class="alert-heading mb-1">Result: {{ prediction_label }}</h5>
+            <p class="mb-0">Chance this customer buys: <strong>{{ probability }}%</strong></p>
+        </div>
+        {% endif %}
+    </div>
+</div>
+{% endblock %}
