@@ -1,14 +1,33 @@
 import io
 import base64
-
 import matplotlib
 matplotlib.use('Agg')
 import matplotlib.pyplot as plt
-
 import pandas as pd
 from flask import Flask, render_template, request
 
 from model import df, model, calculate_price
+from model_knn import (
+    df_knn,
+    knn_accuracy,
+    knn_precision,
+    knn_recall,
+    knn_f1,
+    knn_conf_matrix,
+    predict_cyclist_level,
+    generate_knn_plot,
+    LEVEL_NAMES,
+)
+from model_logistic import (
+    df_logistic,
+    logistic_accuracy,
+    logistic_precision,
+    logistic_recall,
+    logistic_f1,
+    logistic_conf_matrix,
+    predict_purchase,
+    generate_logistic_plot,
+)
 
 app = Flask(__name__)
 
@@ -145,6 +164,136 @@ def regression_application():
     )
 
 
+# ============================================================
+# LOGISTIC REGRESSION — Actividad 2
+# ============================================================
+
+@app.route('/logistic/concepts')
+def logistic_concepts():
+    return render_template('logistic_concepts.html')
+
+
+@app.route('/logistic/application', methods=['GET', 'POST'])
+def logistic_application():
+    prediction_label = None
+    probability = None
+    error = None
+    form_values = {}
+
+    fields = ['edad', 'ingreso_mensual', 'visitas_web_mes', 'tiempo_sitio_min', 'compras_previas', 'descuento_usado']
+
+    if request.method == 'POST':
+        form_values = {f: request.form.get(f, '').strip() for f in fields}
+
+        if not all(form_values.values()):
+            error = "Please fill in all fields."
+        else:
+            try:
+                edad = float(form_values['edad'])
+                ingreso_mensual = float(form_values['ingreso_mensual'])
+                visitas_web_mes = float(form_values['visitas_web_mes'])
+                tiempo_sitio_min = float(form_values['tiempo_sitio_min'])
+                compras_previas = float(form_values['compras_previas'])
+                descuento_usado = float(form_values['descuento_usado'])
+
+                if any(v < 0 for v in [edad, ingreso_mensual, visitas_web_mes, tiempo_sitio_min, compras_previas]):
+                    error = "Please enter non-negative numbers."
+                elif descuento_usado not in (0, 1):
+                    error = "Discount code must be Yes or No."
+                else:
+                    pred, prob = predict_purchase(
+                        edad, ingreso_mensual, visitas_web_mes,
+                        tiempo_sitio_min, compras_previas, descuento_usado
+                    )
+                    prediction_label = "Will buy" if pred == 1 else "Will not buy"
+                    probability = round(prob * 100, 1)
+            except ValueError:
+                error = "Please enter valid numeric values."
+
+    return render_template(
+        'logistic_application.html',
+        chart_base64=generate_logistic_plot(),
+        prediction_label=prediction_label,
+        probability=probability,
+        error=error,
+        form_values=form_values,
+        record_count=len(df_logistic),
+    )
+
+
+@app.route('/logistic/metrics')
+def logistic_metrics():
+    return render_template(
+        'logistic_metrics.html',
+        accuracy=round(logistic_accuracy * 100, 2),
+        precision=round(logistic_precision * 100, 2),
+        recall=round(logistic_recall * 100, 2),
+        f1=round(logistic_f1 * 100, 2),
+        conf_matrix=logistic_conf_matrix.tolist(),
+    )
+
+
+# ============================================================
+# K-NEAREST NEIGHBORS — Actividad 2 (Modelo Asignado)
+# ============================================================
+
+@app.route('/knn/concepts')
+def knn_concepts():
+    return render_template('knn_concepts.html')
+
+
+@app.route('/knn/application', methods=['GET', 'POST'])
+def knn_application():
+    prediction_label = None
+    probabilities = None
+    error = None
+    form_values = {}
+
+    fields = ['distancia_km', 'tiempo_min', 'altimetria_m', 'pulsaciones_prom', 'cadencia_rpm']
+
+    if request.method == 'POST':
+        form_values = {f: request.form.get(f, '').strip() for f in fields}
+
+        if not all(form_values.values()):
+            error = "Please fill in all fields."
+        else:
+            try:
+                values = {f: float(v) for f, v in form_values.items()}
+                if any(v <= 0 for v in values.values()):
+                    error = "Please enter positive numbers."
+                else:
+                    predicted_level, probs = predict_cyclist_level(**values)
+                    prediction_label = LEVEL_NAMES[predicted_level]
+                    probabilities = [
+                        {"label": LEVEL_NAMES[i], "value": round(p * 100, 1)}
+                        for i, p in enumerate(probs)
+                    ]
+            except ValueError:
+                error = "Please enter valid numeric values."
+
+    return render_template(
+        'knn_application.html',
+        chart_base64=generate_knn_plot(),
+        prediction_label=prediction_label,
+        probabilities=probabilities,
+        error=error,
+        form_values=form_values,
+        record_count=len(df_knn),
+    )
+
+
+@app.route('/knn/metrics')
+def knn_metrics():
+    return render_template(
+        'knn_metrics.html',
+        accuracy=round(knn_accuracy * 100, 2),
+        precision=round(knn_precision * 100, 2),
+        recall=round(knn_recall * 100, 2),
+        f1=round(knn_f1 * 100, 2),
+        conf_matrix=knn_conf_matrix.tolist(),
+        level_names=list(LEVEL_NAMES.values()),
+    )
+
+
 if __name__ == '__main__':
     app.run(debug=True)
-    
