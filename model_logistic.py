@@ -1,10 +1,8 @@
 import io
 import base64
-
 import matplotlib
 matplotlib.use('Agg')
 import matplotlib.pyplot as plt
-
 import pandas as pd
 from sklearn.model_selection import train_test_split
 from sklearn.preprocessing import StandardScaler
@@ -26,19 +24,18 @@ FEATURE_NAMES = [
     "descuento_usado",
 ]
 
-# Cargar los datos (dataset proporcionado por el profesor)
+# dataset que nos dio el profe
 df_logistic = pd.read_csv("data/dataset_regresion_logistica.csv")
 
 x = df_logistic[FEATURE_NAMES]
 y = df_logistic["target"]
 
-# División train/test (80% entrenamiento, 20% prueba)
+# 80% para entrenar, 20% para probar
 x_train, x_test, y_train, y_test = train_test_split(
     x, y, test_size=0.2, random_state=42, stratify=y
 )
 
-# Estandarizar los datos (recomendable para regresión logística,
-# ya que las variables tienen escalas muy distintas: edad vs ingreso_mensual)
+# escalo porque ingreso_mensual y edad tienen escalas muy distintas
 scaler = StandardScaler()
 x_train_scaled = scaler.fit_transform(x_train)
 x_test_scaled = scaler.transform(x_test)
@@ -46,7 +43,7 @@ x_test_scaled = scaler.transform(x_test)
 model = LogisticRegression()
 model.fit(x_train_scaled, y_train)
 
-# Métricas calculadas una sola vez al iniciar la app
+# calculo las métricas una sola vez al arrancar la app
 y_pred = model.predict(x_test_scaled)
 
 logistic_accuracy = accuracy_score(y_test, y_pred)
@@ -57,7 +54,7 @@ logistic_conf_matrix = confusion_matrix(y_test, y_pred)
 
 
 def predict_purchase(edad, ingreso_mensual, visitas_web_mes, tiempo_sitio_min, compras_previas, descuento_usado):
-    """Recibe las 6 variables del cliente y devuelve (compra_predicha, probabilidad_de_compra)."""
+    # toma los datos del formulario y devuelve si compra o no, más la probabilidad
     input_df = pd.DataFrame([{
         "edad": edad,
         "ingreso_mensual": ingreso_mensual,
@@ -69,13 +66,13 @@ def predict_purchase(edad, ingreso_mensual, visitas_web_mes, tiempo_sitio_min, c
     input_scaled = scaler.transform(input_df)
 
     prediction = int(model.predict(input_scaled)[0])
-    probability = model.predict_proba(input_scaled)[0][1]  # probabilidad de la clase 1 (compra)
+    probability = model.predict_proba(input_scaled)[0][1]  # esta es la probabilidad de que compre
 
     return prediction, probability
 
 
 def generate_logistic_plot():
-    """Genera un scatter plot de las observaciones agrupadas por clase (target)."""
+    # arma el gráfico de dispersión separando compradores y no compradores
     fig, ax = plt.subplots(figsize=(7, 5))
 
     no_compra = df_logistic[df_logistic["target"] == 0]

@@ -5,7 +5,6 @@ matplotlib.use('Agg')
 import matplotlib.pyplot as plt
 import pandas as pd
 from flask import Flask, render_template, request
-
 from model import df, model, calculate_price
 from model_knn import (
     df_knn,

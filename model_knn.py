@@ -15,23 +15,22 @@ from sklearn.metrics import (
     confusion_matrix,
 )
 
-# Etiquetas legibles para la variable objetivo (0/1/2)
+# para que los niveles se vean con nombre y no como 0/1/2
 LEVEL_NAMES = {0: "Beginner", 1: "Intermediate", 2: "Advanced"}
 FEATURE_NAMES = ["distancia_km", "tiempo_min", "altimetria_m", "pulsaciones_prom", "cadencia_rpm"]
 
-# Cargar los datos
+# dataset de ciclismo que armé
 df_knn = pd.read_csv("data/dataset_ciclismo.csv")
 
 x = df_knn[FEATURE_NAMES]
 y = df_knn["nivel"]
 
-# División train/test (80/20), estratificada para mantener proporción de clases
+# 80/20, estratificado para que no se desbalanceen las clases
 x_train, x_test, y_train, y_test = train_test_split(
     x, y, test_size=0.2, random_state=42, stratify=y
 )
 
-# KNN es sensible a la escala de las variables (distancia_km vs altimetria_m
-# tienen rangos muy distintos), por eso se escalan antes de entrenar.
+# toca escalar porque distancia_km y altimetria_m no manejan la misma escala
 scaler = StandardScaler()
 x_train_scaled = scaler.fit_transform(x_train)
 x_test_scaled = scaler.transform(x_test)
@@ -39,7 +38,7 @@ x_test_scaled = scaler.transform(x_test)
 model = KNeighborsClassifier(n_neighbors=5)
 model.fit(x_train_scaled, y_train)
 
-# Métricas calculadas una sola vez al iniciar la app (no en cada request)
+# esto se calcula una sola vez al arrancar, no en cada request
 y_pred = model.predict(x_test_scaled)
 
 knn_accuracy = accuracy_score(y_test, y_pred)
@@ -50,7 +49,7 @@ knn_conf_matrix = confusion_matrix(y_test, y_pred)
 
 
 def predict_cyclist_level(distancia_km, tiempo_min, altimetria_m, pulsaciones_prom, cadencia_rpm):
-    """Recibe las 5 variables y devuelve (nivel_predicho, probabilidades por clase)."""
+    # recibe los datos del formulario y devuelve el nivel más las probabilidades
     input_df = pd.DataFrame([{
         "distancia_km": distancia_km,
         "tiempo_min": tiempo_min,
@@ -67,7 +66,7 @@ def predict_cyclist_level(distancia_km, tiempo_min, altimetria_m, pulsaciones_pr
 
 
 def generate_knn_plot():
-    """Genera un scatter plot de los ciclistas agrupados por nivel (clase)."""
+    # gráfico de dispersión coloreando cada ciclista según su nivel
     fig, ax = plt.subplots(figsize=(7, 5))
 
     colors = {0: "#E8604C", 1: "#F2B134", 2: "#4C3BCF"}
