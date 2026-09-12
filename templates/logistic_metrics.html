@@ -90,10 +90,19 @@
 <div class="card shadow-sm">
     <div class="card-header">What this means</div>
     <div class="card-body mb-0">
+        <p class="card-text">
+            With {{ accuracy }}% accuracy, the model gets about 3 out of 4 predictions right,
+            which is a reasonable starting point but not strong enough to fully automate a
+            business decision on its own.
+        </p>
         <p class="card-text mb-0">
-            <em>[Write here, in your own words: is {{ accuracy }}% accuracy good enough for this
-            problem? Does the model make more mistakes saying "will buy" when it's wrong, or
-            "will not buy" when it's wrong? Would that be a problem for a real online store?]</em>
+            Looking at the confusion matrix, the model makes slightly more False Positives
+            ({{ conf_matrix[0][1] }}) than False Negatives ({{ conf_matrix[1][0] }}): it more often
+            predicts "will buy" for a customer who does not, than the other way around. For a real
+            online store, this type of mistake is usually the cheaper one — it means showing a
+            promotion to someone who was not going to buy, rather than missing out on a customer
+            who actually would have. Even so, with a near-even split between both types of errors,
+            this model should support marketing decisions, not replace human judgment on its own.
         </p>
     </div>
 </div>
