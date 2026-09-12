@@ -1,6 +1,6 @@
 {% extends "base.html" %}
 {% block title %}Logistic Regression — Evaluation Metrics{% endblock %}
-
+{% block body_class %}section-logistic{% endblock %}
 {% block content %}
 <h1 class="mb-4">Logistic Regression — Evaluation Metrics</h1>
 
@@ -96,13 +96,19 @@
             business decision on its own.
         </p>
         <p class="card-text mb-0">
-            Looking at the confusion matrix, the model makes slightly more False Positives
-            ({{ conf_matrix[0][1] }}) than False Negatives ({{ conf_matrix[1][0] }}): it more often
-            predicts "will buy" for a customer who does not, than the other way around. For a real
-            online store, this type of mistake is usually the cheaper one — it means showing a
-            promotion to someone who was not going to buy, rather than missing out on a customer
-            who actually would have. Even so, with a near-even split between both types of errors,
-            this model should support marketing decisions, not replace human judgment on its own.
+            With 72.5% accuracy, the model gets roughly 3 out of 4 predictions right on data it
+            had never seen before, which is a reasonable starting point for this kind of
+            behavioral problem, though not accurate enough yet to fully automate marketing
+            decisions on its own. Looking at the confusion matrix, the model made 6 false
+            positives (customers it expected to buy who didn't) and 5 false negatives (customers
+            it expected not to buy who actually did) — a fairly balanced error pattern, meaning
+            the model isn't strongly biased toward either outcome. For an online store, a false
+            positive is relatively cheap: it just means offering a discount or a follow-up email
+            to someone who wasn't going to buy anyway. A false negative is more costly, since it
+            means missing a customer who was ready to purchase and not reaching out to them. Given
+            that, the recall of 77.3% is an encouraging sign, as it shows the model catches most
+            real buyers, though there's still room to improve precision and recall together with
+            more data or additional behavioral variables.
         </p>
     </div>
 </div>

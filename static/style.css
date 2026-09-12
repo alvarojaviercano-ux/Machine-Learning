@@ -1,4 +1,3 @@
-```css
 /* DATA WITH ROOTS MACHINE LEARNING WEBSITE */
 
 
@@ -28,6 +27,26 @@
 
     --shadow: 0 6px 20px rgba(40, 92, 64, 0.09);
 
+    /* Section accent colors */
+
+    --blue-soft: #e8f1fb;
+
+    --blue-button: #3d84d6;
+
+    --blue-dark: #1a4e8a;
+
+    --purple-soft: #f1edfb;
+
+    --purple-button: #8262d6;
+
+    --purple-dark: #4a2e8a;
+
+    /* Fonts */
+
+    --font-heading: "Manrope", sans-serif;
+
+    --font-body: "Nunito Sans", "Segoe UI", Arial, sans-serif;
+
 }
 
 
@@ -48,11 +67,34 @@ body {
 
     color: var(--text-main);
 
-    font-family: "Segoe UI", Arial, sans-serif;
+    font-family: var(--font-body);
 
     font-size: 18px;
 
     line-height: 1.65;
+
+}
+
+
+/* HEADINGS USE THE HEADING FONT */
+
+.navbar-brand,
+
+.page-container h1,
+
+.page-container h2,
+
+.page-container h3,
+
+.page-container h4,
+
+.card-title,
+
+.footer-title,
+
+header h1 {
+
+    font-family: var(--font-heading);
 
 }
 
@@ -477,6 +519,96 @@ section {
     font-size: 1.08rem;
 
     line-height: 1.7;
+
+}
+
+
+/* ============================================================ */
+/* SECTION ACCENT COLORS — Logistic Regression (blue) */
+/* ============================================================ */
+
+body.section-logistic .card-header {
+
+    background-color: var(--blue-soft) !important;
+
+    color: var(--blue-dark) !important;
+
+}
+
+body.section-logistic .page-container h1 {
+
+    color: var(--blue-dark);
+
+}
+
+body.section-logistic .btn-primary {
+
+    background-color: var(--blue-button) !important;
+
+    border-color: var(--blue-button) !important;
+
+}
+
+body.section-logistic .btn-primary:hover {
+
+    background-color: var(--blue-dark) !important;
+
+    border-color: var(--blue-dark) !important;
+
+}
+
+body.section-logistic .form-control:focus,
+
+body.section-logistic .form-select:focus {
+
+    border-color: var(--blue-button);
+
+    box-shadow: 0 0 0 0.2rem rgba(61, 132, 214, 0.18);
+
+}
+
+
+/* ============================================================ */
+/* SECTION ACCENT COLORS — K-Nearest Neighbors (purple) */
+/* ============================================================ */
+
+body.section-knn .card-header {
+
+    background-color: var(--purple-soft) !important;
+
+    color: var(--purple-dark) !important;
+
+}
+
+body.section-knn .page-container h1 {
+
+    color: var(--purple-dark);
+
+}
+
+body.section-knn .btn-primary {
+
+    background-color: var(--purple-button) !important;
+
+    border-color: var(--purple-button) !important;
+
+}
+
+body.section-knn .btn-primary:hover {
+
+    background-color: var(--purple-dark) !important;
+
+    border-color: var(--purple-dark) !important;
+
+}
+
+body.section-knn .form-control:focus,
+
+body.section-knn .form-select:focus {
+
+    border-color: var(--purple-button);
+
+    box-shadow: 0 0 0 0.2rem rgba(130, 98, 214, 0.18);
 
 }
 
