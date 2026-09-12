@@ -94,10 +94,18 @@
 <div class="card shadow-sm">
     <div class="card-header">What this means</div>
     <div class="card-body mb-0">
+        <p class="card-text">
+            At {{ accuracy }}% accuracy, this model performs well for a 3-class problem, where
+            guessing at random would only get it right about 33% of the time.
+        </p>
         <p class="card-text mb-0">
-            <em>[Write here, in your own words: which levels does the model mix up the most
-            (look at the numbers outside the diagonal)? Is {{ accuracy }}% accuracy good enough
-            for a model with 3 possible answers?]</em>
+            The confusion matrix shows the model mixes up neighboring levels the most: Beginner
+            and Intermediate cyclists get confused with each other more than any other pair, and
+            the same happens between Intermediate and Advanced. Notably, the model almost never
+            confuses Beginner with Advanced directly, which makes sense — those two groups are the
+            most different in terms of distance, elevation gain, and pace. This pattern is typical
+            of ordered categories: mistakes tend to happen between "next-door" levels, not between
+            opposite extremes.
         </p>
     </div>
 </div>

@@ -1,6 +1,6 @@
 {% extends "base.html" %}
 {% block title %}Logistic Regression — Evaluation Metrics{% endblock %}
-
+{% block body_class %}section-logistic{% endblock %}
 {% block content %}
 <h1 class="mb-4">Logistic Regression — Evaluation Metrics</h1>
 
@@ -90,6 +90,11 @@
 <div class="card shadow-sm">
     <div class="card-header">What this means</div>
     <div class="card-body mb-0">
+        <p class="card-text">
+            With {{ accuracy }}% accuracy, the model gets about 3 out of 4 predictions right,
+            which is a reasonable starting point but not strong enough to fully automate a
+            business decision on its own.
+        </p>
         <p class="card-text mb-0">
             With 72.5% accuracy, the model gets roughly 3 out of 4 predictions right on data it
             had never seen before, which is a reasonable starting point for this kind of
