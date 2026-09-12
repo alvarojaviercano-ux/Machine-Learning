@@ -1,0 +1,123 @@
+{% extends "base.html" %}
+{% block title %}K-Nearest Neighbors — Concepts{% endblock %}
+
+{% block content %}
+<h1 class="mb-4">K-Nearest Neighbors (KNN) — Concepts</h1>
+
+<div class="card shadow-sm mb-4">
+    <div class="card-header bg-dark text-white">What is KNN?</div>
+    <div class="card-body">
+        <p class="card-text mb-0">
+            K-Nearest Neighbors is a model that guesses the group of a new item by looking at the
+            <strong>most similar items</strong> it already knows about, and picking the group that
+            most of them belong to.
+        </p>
+        <p class="card-text mb-0">
+            Unlike other models, KNN does not learn a formula ahead of time. It just keeps all the
+            training data, and compares new data to it every time it needs to make a guess.
+        </p>
+    </div>
+</div>
+
+<div class="row g-4 mb-4">
+    <div class="col-md-6">
+        <div class="card h-100 shadow-sm border-primary">
+            <div class="card-body">
+                <h6 class="card-title text-primary">How it works</h6>
+                <ol class="card-text mb-0">
+                    <li>Measure the distance between the new item and every item we already have.</li>
+                    <li>Pick the <strong>k</strong> closest items (the "neighbors").</li>
+                    <li>Use the group that most of those neighbors belong to as the answer.</li>
+                </ol>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-6">
+        <div class="card h-100 shadow-sm border-success">
+            <div class="card-body">
+                <h6 class="card-title text-success">Why we scale the data</h6>
+                <p class="card-text mb-0">
+                    Since KNN uses distances, a variable with big numbers (like elevation in
+                    meters) could unfairly outweigh a variable with small numbers (like cadence).
+                    That's why we scale all the numbers to a similar range before training.
+                </p>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="card shadow-sm mb-4">
+    <div class="card-header">What kind of problems it can solve</div>
+    <div class="card-body mb-0">
+        <p class="card-text mb-0">
+            KNN can be used for <strong>classification</strong> (guessing a category, like in this
+            app) and also for <strong>regression</strong> (guessing a number, by averaging the
+            neighbors instead of voting). It also works fine when there are more than two
+            categories, like in this project.
+        </p>
+    </div>
+</div>
+
+<div class="row g-4 mb-4">
+    <div class="col-md-6">
+        <div class="card h-100 shadow-sm border-success">
+            <div class="card-body">
+                <h6 class="card-title text-success">Advantages</h6>
+                <ul class="card-text mb-0">
+                    <li>Easy to understand and build.</li>
+                    <li>No real "training" step — it just stores the data.</li>
+                    <li>Works well with more than two categories.</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-6">
+        <div class="card h-100 shadow-sm border-danger">
+            <div class="card-body">
+                <h6 class="card-title text-danger">Limitations</h6>
+                <ul class="card-text mb-0">
+                    <li>Can be slow with very large amounts of data.</li>
+                    <li>Sensitive to unscaled or irrelevant variables.</li>
+                    <li>The result depends a lot on the value of k.</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="card shadow-sm mb-4">
+    <div class="card-header">Real-world example</div>
+    <div class="card-body mb-0">
+        <p class="card-text mb-0">
+            A common use of KNN is in <strong>recommendation systems</strong> — for example,
+            suggesting movies to a user based on what similar users liked. In this project, we
+            use the same idea to guess a cyclist's skill level based on other cyclists with
+            similar ride data.
+        </p>
+    </div>
+</div>
+
+<div class="card shadow-sm mb-4">
+    <div class="card-header">Three Classes Instead of Two</div>
+    <div class="card-body">
+        <p class="card-text mb-0">
+            This model sorts cyclists into <strong>three groups</strong> instead of just two:
+            <span class="badge bg-secondary">Beginner</span>
+            <span class="badge bg-secondary">Intermediate</span>
+            <span class="badge bg-secondary">Advanced</span>.
+            KNN works the same way no matter how many groups there are.
+        </p>
+    </div>
+</div>
+
+<div class="card shadow-sm">
+    <div class="card-header">Choosing "k"</div>
+    <div class="card-body mb-0">
+        <ul class="mb-0">
+            <li>A <strong>small k</strong> (like 1 – 3) can make the model too sensitive to noise.</li>
+            <li>A <strong>big k</strong> makes the model smoother, but it may miss small patterns.</li>
+            <li>This app uses <strong>k = 5</strong>, a common middle-ground choice.</li>
+        </ul>
+    </div>
+</div>
+{% endblock %}

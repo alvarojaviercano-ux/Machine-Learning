@@ -1,0 +1,139 @@
+{% extends "base.html" %}
+{% block title %}K-Nearest Neighbors — Application{% endblock %}
+
+{% block content %}
+<h1 class="mb-4">K-Nearest Neighbors — Application</h1>
+
+<div class="card shadow-sm mb-4">
+    <div class="card-header bg-dark text-white">The Problem</div>
+    <div class="card-body">
+        <p class="card-text mb-0">
+            Coaches and cycling apps want an easy way to know a rider's skill level. This page
+            uses a K-Nearest Neighbors model to guess a cyclist's <strong>level</strong>
+            (Beginner, Intermediate, or Advanced) based on the data from one of their rides.
+        </p>
+    </div>
+</div>
+
+<div class="row g-4 mb-4">
+    <div class="col-md-6">
+        <div class="card h-100 shadow-sm border-primary">
+            <div class="card-body">
+                <h6 class="card-title text-primary">Input Data (X)</h6>
+                <ul class="card-text mb-0">
+                    <li>Distance ridden (km)</li>
+                    <li>Total time (minutes)</li>
+                    <li>Elevation gain (m)</li>
+                    <li>Average heart rate (bpm)</li>
+                    <li>Average cadence (rpm)</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-6">
+        <div class="card h-100 shadow-sm border-success">
+            <div class="card-body">
+                <h6 class="card-title text-success">What we are guessing (Y)</h6>
+                <p class="card-text mb-0">Cyclist level — Beginner, Intermediate, or Advanced</p>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="card shadow-sm mb-4">
+    <div class="card-header">Dataset</div>
+    <div class="card-body">
+        <ul class="mb-0">
+            <li><strong>Number of records:</strong> {{ record_count }}</li>
+            <li><strong>Input data:</strong> distance, time, elevation gain, heart rate, cadence</li>
+            <li><strong>What we predict:</strong> cyclist level (3 groups)</li>
+            <li><strong>Meaning:</strong> 0 = Beginner, 1 = Intermediate, 2 = Advanced</li>
+            <li><strong>Source:</strong> Made-up data our team built to look like real rides for each level.</li>
+        </ul>
+    </div>
+</div>
+
+<div class="card shadow-sm mb-4">
+    <div class="card-header">Chart</div>
+    <div class="card-body text-center">
+        <img src="data:image/png;base64,{{ chart_base64 }}" class="img-fluid" alt="Scatter plot of cyclists grouped by skill level">
+    </div>
+</div>
+
+<div class="card shadow-sm">
+    <div class="card-header bg-primary text-white">Try It — Prediction Form</div>
+    <div class="card-body">
+        <form method="POST" class="row g-3 align-items-end">
+
+            <div class="col-md-4">
+                <label for="distancia_km" class="form-label">Distance (km)</label>
+                <input type="text" class="form-control {% if error %}is-invalid{% endif %}"
+                       id="distancia_km" name="distancia_km"
+                       value="{{ form_values.distancia_km or '' }}" placeholder="e.g. 45">
+            </div>
+
+            <div class="col-md-4">
+                <label for="tiempo_min" class="form-label">Time (min)</label>
+                <input type="text" class="form-control {% if error %}is-invalid{% endif %}"
+                       id="tiempo_min" name="tiempo_min"
+                       value="{{ form_values.tiempo_min or '' }}" placeholder="e.g. 120">
+            </div>
+
+            <div class="col-md-4">
+                <label for="altimetria_m" class="form-label">Elevation gain (m)</label>
+                <input type="text" class="form-control {% if error %}is-invalid{% endif %}"
+                       id="altimetria_m" name="altimetria_m"
+                       value="{{ form_values.altimetria_m or '' }}" placeholder="e.g. 400">
+            </div>
+
+            <div class="col-md-4">
+                <label for="pulsaciones_prom" class="form-label">Avg. heart rate (bpm)</label>
+                <input type="text" class="form-control {% if error %}is-invalid{% endif %}"
+                       id="pulsaciones_prom" name="pulsaciones_prom"
+                       value="{{ form_values.pulsaciones_prom or '' }}" placeholder="e.g. 145">
+            </div>
+
+            <div class="col-md-4">
+                <label for="cadencia_rpm" class="form-label">Avg. cadence (rpm)</label>
+                <input type="text" class="form-control {% if error %}is-invalid{% endif %}"
+                       id="cadencia_rpm" name="cadencia_rpm"
+                       value="{{ form_values.cadencia_rpm or '' }}" placeholder="e.g. 78">
+            </div>
+
+            <div class="col-md-4">
+                <button type="submit" class="btn btn-primary w-100">Predict Level</button>
+            </div>
+
+            {% if error %}
+                <div class="text-danger mt-2">{{ error }}</div>
+            {% endif %}
+        </form>
+
+        {% if prediction_label %}
+        <div class="alert alert-success mt-4">
+            <h5 class="alert-heading mb-1">Result: {{ prediction_label }}</h5>
+            <p class="mb-0">This is our best guess for this cyclist's level.</p>
+        </div>
+
+        <div class="card shadow-sm mt-3 mb-0">
+            <div class="card-header">Chance for Each Level</div>
+            <div class="card-body">
+                <table class="table table-sm mb-0">
+                    <thead>
+                        <tr><th>Level</th><th>Chance</th></tr>
+                    </thead>
+                    <tbody>
+                        {% for p in probabilities %}
+                        <tr>
+                            <td>{{ p.label }}</td>
+                            <td>{{ p.value }}%</td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        {% endif %}
+    </div>
+</div>
+{% endblock %}

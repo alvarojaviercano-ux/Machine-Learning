@@ -1,0 +1,110 @@
+{% extends "base.html" %}
+{% block title %}Logistic Regression — Evaluation Metrics{% endblock %}
+
+{% block content %}
+<h1 class="mb-4">Logistic Regression — Evaluation Metrics</h1>
+
+<div class="card shadow-sm mb-4">
+    <div class="card-header bg-dark text-white">How we tested the model</div>
+    <div class="card-body mb-0">
+        <p class="card-text mb-0">
+            We used 80% of the data to train the model, and kept the other 20% to test it. The
+            numbers below compare the model's guesses on that 20% against the real answers, which
+            the model never saw during training.
+        </p>
+    </div>
+</div>
+
+<div class="row g-4 mb-4">
+    <div class="col-md-3">
+        <div class="card h-100 shadow-sm text-center">
+            <div class="card-body">
+                <h6 class="card-title text-muted">Accuracy</h6>
+                <p class="display-6 mb-0">{{ accuracy }}%</p>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-3">
+        <div class="card h-100 shadow-sm text-center">
+            <div class="card-body">
+                <h6 class="card-title text-muted">Precision</h6>
+                <p class="display-6 mb-0">{{ precision }}%</p>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-3">
+        <div class="card h-100 shadow-sm text-center">
+            <div class="card-body">
+                <h6 class="card-title text-muted">Recall</h6>
+                <p class="display-6 mb-0">{{ recall }}%</p>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-3">
+        <div class="card h-100 shadow-sm text-center">
+            <div class="card-body">
+                <h6 class="card-title text-muted">F1-Score</h6>
+                <p class="display-6 mb-0">{{ f1 }}%</p>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="card shadow-sm mb-4">
+    <div class="card-header">Confusion Matrix</div>
+    <div class="card-body">
+        <p class="card-text">
+            Rows show the <strong>real</strong> answer, columns show what the model
+            <strong>guessed</strong>.
+        </p>
+        <table class="table table-bordered text-center mb-3">
+            <thead class="table-light">
+                <tr>
+                    <th>Real \ Guessed</th>
+                    <th>No Purchase (0)</th>
+                    <th>Purchase (1)</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <th class="table-light">No Purchase (0)</th>
+                    <td>{{ conf_matrix[0][0] }} (TN)</td>
+                    <td>{{ conf_matrix[0][1] }} (FP)</td>
+                </tr>
+                <tr>
+                    <th class="table-light">Purchase (1)</th>
+                    <td>{{ conf_matrix[1][0] }} (FN)</td>
+                    <td>{{ conf_matrix[1][1] }} (TP)</td>
+                </tr>
+            </tbody>
+        </table>
+        <ul class="mb-0">
+            <li><strong>True Positives (TP = {{ conf_matrix[1][1] }}):</strong> customers the model correctly said would buy.</li>
+            <li><strong>True Negatives (TN = {{ conf_matrix[0][0] }}):</strong> customers the model correctly said would not buy.</li>
+            <li><strong>False Positives (FP = {{ conf_matrix[0][1] }}):</strong> the model said "will buy", but they did not.</li>
+            <li><strong>False Negatives (FN = {{ conf_matrix[1][0] }}):</strong> the model said "will not buy", but they did.</li>
+        </ul>
+    </div>
+</div>
+
+<div class="card shadow-sm">
+    <div class="card-header">What this means</div>
+    <div class="card-body mb-0">
+        <p class="card-text mb-0">
+            With 72.5% accuracy, the model gets roughly 3 out of 4 predictions right on data it
+            had never seen before, which is a reasonable starting point for this kind of
+            behavioral problem, though not accurate enough yet to fully automate marketing
+            decisions on its own. Looking at the confusion matrix, the model made 6 false
+            positives (customers it expected to buy who didn't) and 5 false negatives (customers
+            it expected not to buy who actually did) — a fairly balanced error pattern, meaning
+            the model isn't strongly biased toward either outcome. For an online store, a false
+            positive is relatively cheap: it just means offering a discount or a follow-up email
+            to someone who wasn't going to buy anyway. A false negative is more costly, since it
+            means missing a customer who was ready to purchase and not reaching out to them. Given
+            that, the recall of 77.3% is an encouraging sign, as it shows the model catches most
+            real buyers, though there's still room to improve precision and recall together with
+            more data or additional behavioral variables.
+        </p>
+    </div>
+</div>
+{% endblock %}
