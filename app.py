@@ -6,6 +6,9 @@ import matplotlib.pyplot as plt
 import pandas as pd
 from flask import Flask, render_template, request
 from model import df, model, calculate_price
+from model_clustering import AppsClusteringModel
+from manual_clustering import ManualKMeans
+
 from model_knn import (
     df_knn,
     knn_accuracy,
@@ -163,8 +166,7 @@ def regression_application():
     )
 
 
-# ============================================================
-# LOGISTIC REGRESSION — Actividad 2
+# LOGISTIC REGRESSION
 # ============================================================
 
 @app.route('/logistic/concepts')
@@ -232,8 +234,7 @@ def logistic_metrics():
     )
 
 
-# ============================================================
-# K-NEAREST NEIGHBORS — Actividad 2 (Modelo Asignado)
+# K-NEAREST NEIGHBORS (Modelo Asignado)
 # ============================================================
 
 @app.route('/knn/concepts')
@@ -291,6 +292,58 @@ def knn_metrics():
         f1=round(knn_f1 * 100, 2),
         conf_matrix=knn_conf_matrix.tolist(),
         level_names=list(LEVEL_NAMES.values()),
+    )
+
+
+# UNSUPERVISED LEARNING: K-MEANS CLUSTERING
+# ============================================================
+
+@app.route('/clustering/concepts')
+def clustering_concepts():
+    return render_template('clustering_concepts.html')
+
+
+@app.route('/clustering/manual')
+def clustering_manual():
+    manual = ManualKMeans(n_iterations=3)
+    result = manual.run()
+    return render_template(
+        'clustering_manual.html',
+        record_count=result['record_count'],
+        initial_centroids=result['initial_centroids'],
+        initial_plot=result['initial_plot'],
+        iterations=result['iterations'],
+        variances=result['variances'],
+        final_centroids=result['final_centroids'],
+        cluster_sizes=result['cluster_sizes'],
+    )
+
+
+@app.route('/clustering/application')
+def clustering_application():
+    clustering_model = AppsClusteringModel(n_clusters=3)
+    result = clustering_model.implement_clustering()
+    chart_base64 = clustering_model.generate_plot(result['df'])
+
+    df_apps = result['df']
+    sample_rows = []
+    for i in range(15):
+        row = df_apps.iloc[i]
+        sample_rows.append({
+            "app_name": row["app_name"],
+            "category": row["category"],
+            "size_mb": row["size_mb"],
+            "rating": row["rating"],
+            "cluster": row["cluster"],
+        })
+
+    return render_template(
+        'clustering_application.html',
+        record_count=len(df_apps),
+        summary=result['summary'],
+        silhouette=round(result['silhouette'], 3),
+        sample_rows=sample_rows,
+        chart_base64=chart_base64,
     )
 
 

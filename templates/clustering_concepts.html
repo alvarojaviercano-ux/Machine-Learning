@@ -1,0 +1,81 @@
+{% extends "base.html" %}
+{% block title %}Unsupervised Learning — Concepts{% endblock %}
+
+{% block content %}
+<h1 class="mb-4">Unsupervised Machine Learning — Concepts</h1>
+
+<div class="card shadow-sm mb-4">
+    <div class="card-header bg-dark text-white">What is Unsupervised Learning?</div>
+    <div class="card-body">
+        <p class="card-text mb-0">
+            In Unsupervised Learning, the data does not come with a correct answer. There is no
+            "target" column like in Logistic Regression or KNN. We just give the model the data,
+            and it tries to find groups or patterns on its own.
+        </p>
+    </div>
+</div>
+
+<div class="card shadow-sm mb-4">
+    <div class="card-header">What is Clustering?</div>
+    <div class="card-body mb-0">
+        <p class="card-text mb-0">
+            Clustering means putting similar items into the same group, called a
+            <strong>cluster</strong>, without telling the model what the groups should look like
+            beforehand. Items that are close to each other end up together.
+        </p>
+    </div>
+</div>
+
+<div class="row g-4 mb-4">
+    <div class="col-md-6">
+        <div class="card h-100 shadow-sm border-primary">
+            <div class="card-body">
+                <h6 class="card-title text-primary">Centroids</h6>
+                <p class="card-text mb-0">
+                    A centroid is the "center point" of a cluster — the average position of all
+                    the points that belong to it. K-Means keeps moving the centroids until they
+                    stop changing.
+                </p>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-6">
+        <div class="card h-100 shadow-sm border-success">
+            <div class="card-body">
+                <h6 class="card-title text-success">Iterations</h6>
+                <p class="card-text mb-0">
+                    K-Means repeats the same two steps over and over: (1) assign each point to
+                    the closest centroid, (2) move each centroid to the average of its points.
+                    Each repetition is called an iteration.
+                </p>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="card shadow-sm mb-4">
+    <div class="card-header">How K-Means Works, Step by Step</div>
+    <div class="card-body mb-0">
+        <ol class="card-text mb-0">
+            <li>Choose <strong>k</strong>, the number of clusters you want to find.</li>
+            <li>Place k centroids, either randomly or at chosen starting points.</li>
+            <li>Calculate the distance from every data point to every centroid.</li>
+            <li>Assign each point to its closest centroid.</li>
+            <li>Recalculate each centroid as the average of the points assigned to it.</li>
+            <li>Repeat steps 3–5 until the centroids stop moving (the model has converged).</li>
+        </ol>
+    </div>
+</div>
+
+<div class="card shadow-sm">
+    <div class="card-header">Why scale the data before clustering?</div>
+    <div class="card-body mb-0">
+        <p class="card-text mb-0">
+            K-Means measures distance between points, so a variable with big numbers (like app
+            size in MB) can unfairly dominate a variable with small numbers (like a rating from
+            1 to 5). Scaling both variables to a similar range makes sure both are treated
+            fairly when the distances are calculated.
+        </p>
+    </div>
+</div>
+{% endblock %}

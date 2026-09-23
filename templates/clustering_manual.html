@@ -1,0 +1,121 @@
+{% extends "base.html" %}
+{% block title %}Unsupervised Learning — Manual Exercise{% endblock %}
+
+{% block content %}
+<h1 class="mb-4">Manual K-Means Exercise</h1>
+
+<div class="card shadow-sm mb-4">
+    <div class="card-header bg-dark text-white">Dataset Context</div>
+    <div class="card-body">
+        <p class="card-text">
+            This exercise uses a sample of <strong>{{ record_count }} mobile apps</strong>, taken
+            from the same Google-Play-Store-style dataset registered for this activity.
+        </p>
+        <ul class="mb-0">
+            <li><strong>size_mb:</strong> the size of the app, in megabytes.</li>
+            <li><strong>rating:</strong> the app's average user rating, from 1 to 5.</li>
+        </ul>
+    </div>
+</div>
+
+<div class="card shadow-sm mb-4">
+    <div class="card-header">Initial Centroids (chosen manually)</div>
+    <div class="card-body">
+        <p class="card-text">
+            Instead of picking random centroids, we chose 3 starting points based on the app
+            profiles we expect to find:
+        </p>
+        <table class="table table-sm mb-3">
+            <thead><tr><th>Centroid</th><th>size_mb</th><th>rating</th><th>Represents</th></tr></thead>
+            <tbody>
+                <tr><td>C1</td><td>{{ initial_centroids[0][0] }}</td><td>{{ initial_centroids[0][1] }}</td><td>Light, well-rated app</td></tr>
+                <tr><td>C2</td><td>{{ initial_centroids[1][0] }}</td><td>{{ initial_centroids[1][1] }}</td><td>Heavy, well-rated app</td></tr>
+                <tr><td>C3</td><td>{{ initial_centroids[2][0] }}</td><td>{{ initial_centroids[2][1] }}</td><td>Heavy, poorly-rated app</td></tr>
+            </tbody>
+        </table>
+        <div class="text-center">
+            <img src="data:image/png;base64,{{ initial_plot }}" class="img-fluid" alt="Initial data and centroids">
+        </div>
+    </div>
+</div>
+
+{% for it in iterations %}
+<div class="card shadow-sm mb-4">
+    <div class="card-header bg-primary text-white">Iteration {{ it.number }}</div>
+    <div class="card-body">
+        <p class="card-text">
+            Distance from each app to the 3 centroids, and the cluster each app was assigned to
+            (showing the first 10 of {{ it.total_rows }} apps — the full table has one row per app):
+        </p>
+        <div class="table-responsive mb-3">
+            <table class="table table-sm table-bordered">
+                <thead>
+                    <tr>
+                        <th>App</th><th>size_mb</th><th>rating</th>
+                        <th>Dist. C1</th><th>Dist. C2</th><th>Dist. C3</th><th>Cluster</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for row in it.table_sample %}
+                    <tr>
+                        <td>{{ row.app_name }}</td>
+                        <td>{{ row.size_mb }}</td>
+                        <td>{{ row.rating }}</td>
+                        <td>{{ row.dist_C1 }}</td>
+                        <td>{{ row.dist_C2 }}</td>
+                        <td>{{ row.dist_C3 }}</td>
+                        <td>{{ row.assigned_cluster }}</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+
+        <p class="card-text mb-1"><strong>Updated centroids after this iteration:</strong></p>
+        <ul>
+            <li>C1: size_mb = {{ it.centroids[0][0] }}, rating = {{ it.centroids[0][1] }}</li>
+            <li>C2: size_mb = {{ it.centroids[1][0] }}, rating = {{ it.centroids[1][1] }}</li>
+            <li>C3: size_mb = {{ it.centroids[2][0] }}, rating = {{ it.centroids[2][1] }}</li>
+        </ul>
+        <p class="card-text"><strong>Within-cluster variance:</strong> {{ it.variance }}</p>
+
+        <div class="text-center">
+            <img src="data:image/png;base64,{{ it.plot }}" class="img-fluid" alt="Iteration {{ it.number }} plot">
+        </div>
+    </div>
+</div>
+{% endfor %}
+
+<div class="card shadow-sm mb-4">
+    <div class="card-header">Variance Comparison Across Iterations</div>
+    <div class="card-body">
+        <table class="table table-sm mb-0">
+            <thead><tr>{% for v in variances %}<th>Iteration {{ loop.index }}</th>{% endfor %}</tr></thead>
+            <tbody><tr>{% for v in variances %}<td>{{ v }}</td>{% endfor %}</tr></tbody>
+        </table>
+    </div>
+</div>
+
+<div class="card shadow-sm">
+    <div class="card-header">Final Result and Cluster Characteristics</div>
+    <div class="card-body mb-0">
+        <p class="card-text">
+            The algorithm reached its final centroids after the variance stopped decreasing
+            between iterations, meaning the clusters became stable (converged):
+        </p>
+        <ul>
+            <li>Cluster 1 ({{ cluster_sizes[0] }} apps): centroid at size_mb = {{ final_centroids[0][0] }}, rating = {{ final_centroids[0][1] }} — smaller apps.</li>
+            <li>Cluster 2 ({{ cluster_sizes[1] }} apps): centroid at size_mb = {{ final_centroids[1][0] }}, rating = {{ final_centroids[1][1] }} — larger apps.</li>
+            <li>Cluster 3 ({{ cluster_sizes[2] }} apps): centroid at size_mb = {{ final_centroids[2][0] }}, rating = {{ final_centroids[2][1] }} — medium-to-large apps.</li>
+        </ul>
+        <p class="card-text mb-0">
+            Since this manual exercise does not scale the variables, the Euclidean distance is
+            dominated by <code>size_mb</code> (which ranges from 0–500) rather than
+            <code>rating</code> (which only ranges from 1–5). This is why the clusters mostly
+            separate apps by size. In the Clustering Application page, the same data (using the
+            full 1,000-app dataset) is scaled before training with Scikit-learn, allowing rating
+            to influence the grouping as well.
+        </p>
+    </div>
+</div>
+{% endblock %}
