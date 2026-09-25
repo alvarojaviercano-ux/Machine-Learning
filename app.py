@@ -346,5 +346,32 @@ def kmeans_application():
         chart_base64=chart_base64,
     )
 
+
+
+
+# KMEANS CONCEPTS
+# ============================================================
+
+@app.route('/kmeans/concepts')
+def kmeans_concepts():
+    return render_template('kmeans_concepts.html')
+
+
+@app.route('/kmeans/manual')
+def kmeans_manual():
+    manual = ManualKMeans(n_iterations=3)
+    result = manual.run()
+    return render_template(
+        'kmeans_manual.html',
+        record_count=result['record_count'],
+        initial_centroids=result['initial_centroids'],
+        initial_plot=result['initial_plot'],
+        iterations=result['iterations'],
+        variances=result['variances'],
+        final_centroids=result['final_centroids'],
+        cluster_sizes=result['cluster_sizes'],
+    )
+
+
 if __name__ == '__main__':
     app.run(debug=True)
