@@ -1,0 +1,131 @@
+{% extends "base.html" %}
+{% block title %}Unsupervised Learning — Clustering Application{% endblock %}
+
+{% block content %}
+<h1 class="mb-4">Clustering Application</h1>
+
+<div class="card shadow-sm mb-4">
+    <div class="card-header bg-dark text-white">Dataset and Variable Selection</div>
+    <div class="card-body">
+        <p class="card-text">
+            This page groups <strong>{{ record_count }} mobile apps</strong> using K-Means,
+            based on the topic registered for this activity: mobile app segmentation by size
+            and user rating.
+        </p>
+        <ul class="mb-0">
+            <li><strong>size_mb:</strong> the size of the app, in megabytes.</li>
+            <li><strong>rating:</strong> the app's average user rating, from 1 to 5.</li>
+            <li><strong>Why these variables:</strong> they are the two numbers that best describe
+                an app from a user's point of view — how much space it takes, and how good it
+                is — making them a natural, meaningful pair for grouping apps.</li>
+        </ul>
+    </div>
+</div>
+
+<div class="card shadow-sm mb-4">
+    <div class="card-header">Preprocessing</div>
+    <div class="card-body mb-0">
+        <p class="card-text mb-0">
+            Before training, <code>size_mb</code> and <code>rating</code> were standardized using
+            <code>StandardScaler</code>. This is needed because size_mb ranges from about 1 to
+            500, while rating only ranges from 1 to 5 — without scaling, size would dominate the
+            distance calculation and rating would have almost no effect on the clusters.
+        </p>
+    </div>
+</div>
+
+<div class="card shadow-sm mb-4">
+    <div class="card-header">K-Means Configuration</div>
+    <div class="card-body mb-0">
+        <p class="card-text mb-0">
+            The model was trained with Scikit-learn's <code>KMeans</code>, using
+            <strong>k = 3</strong> clusters (matching the 3 app profiles expected: light and
+            well-rated, heavy and well-rated, heavy and poorly-rated), <code>n_init = 10</code>
+            (the algorithm runs 10 times with different starting points and keeps the best
+            result), and a fixed <code>random_state</code> so the result is reproducible.
+        </p>
+    </div>
+</div>
+
+<div class="card shadow-sm mb-4">
+    <div class="card-header">Chart</div>
+    <div class="card-body text-center">
+        <img src="data:image/png;base64,{{ chart_base64 }}" class="img-fluid" alt="Scatter plot of apps grouped by cluster, with centroids">
+    </div>
+</div>
+
+<div class="card shadow-sm mb-4">
+    <div class="card-header">Cluster Summary</div>
+    <div class="card-body">
+        <table class="table table-sm mb-0">
+            <thead>
+                <tr><th>Cluster</th><th>Number of Apps</th><th>Avg. size_mb</th><th>Avg. rating</th><th>Centroid (size_mb, rating)</th></tr>
+            </thead>
+            <tbody>
+                {% for s in summary %}
+                <tr>
+                    <td>Cluster {{ s.cluster + 1 }}</td>
+                    <td>{{ s.count }}</td>
+                    <td>{{ s.avg_size_mb }}</td>
+                    <td>{{ s.avg_rating }}</td>
+                    <td>({{ s.centroid_size_mb }}, {{ s.centroid_rating }})</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<div class="card shadow-sm mb-4">
+    <div class="card-header">Records and Assigned Clusters</div>
+    <div class="card-body">
+        <p class="card-text">Showing the first 15 of {{ record_count }} apps:</p>
+        <div class="table-responsive">
+            <table class="table table-sm table-bordered mb-0">
+                <thead><tr><th>App</th><th>Category</th><th>size_mb</th><th>rating</th><th>Cluster</th></tr></thead>
+                <tbody>
+                    {% for row in sample_rows %}
+                    <tr>
+                        <td>{{ row.app_name }}</td>
+                        <td>{{ row.category }}</td>
+                        <td>{{ row.size_mb }}</td>
+                        <td>{{ row.rating }}</td>
+                        <td>Cluster {{ row.cluster + 1 }}</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+<div class="card shadow-sm mb-4">
+    <div class="card-header">Silhouette Score</div>
+    <div class="card-body mb-0">
+        <p class="card-text mb-2">
+            <span class="display-6">{{ silhouette }}</span>
+        </p>
+        <p class="card-text mb-0">
+            The silhouette score measures how well-separated the clusters are, from -1 (badly
+            separated / overlapping) to 1 (perfectly separated). A score around
+            {{ silhouette }} suggests that the 3 clusters are reasonably well separated, which
+            makes sense here since the 3 app profiles (light/good, heavy/good, heavy/bad) are
+            fairly distinct from each other.
+        </p>
+    </div>
+</div>
+
+<div class="card shadow-sm">
+    <div class="card-header">Cluster Characteristics</div>
+    <div class="card-body mb-0">
+        <ul class="mb-0">
+            {% for s in summary %}
+            <li>
+                <strong>Cluster {{ s.cluster + 1 }}</strong> ({{ s.count }} apps): average size
+                {{ s.avg_size_mb }} MB, average rating {{ s.avg_rating }}.
+            </li>
+            {% endfor %}
+        </ul>
+    </div>
+</div>
+{% endblock %}

@@ -1,0 +1,157 @@
+{% extends "base.html" %}
+{% block title %}K-Means — Manual Exercise{% endblock %}
+{% block body_class %}section-kmeans{% endblock %}
+
+{% block content %}
+<h1 class="mb-4">K-Means — Manual Exercise</h1>
+
+<div class="card shadow-sm mb-4">
+    <div class="card-header bg-dark text-white">Dataset Context</div>
+    <div class="card-body">
+        <p class="card-text">
+            This exercise uses a sample of <strong>{{ record_count }} mobile apps</strong>,
+            described by two numerical variables:
+        </p>
+        <ul class="mb-0">
+            <li><strong>Size (MB):</strong> the storage size of the app.</li>
+            <li><strong>Rating:</strong> the app's average user rating (0 to 5).</li>
+        </ul>
+    </div>
+</div>
+
+<div class="card shadow-sm mb-4">
+    <div class="card-header">Initial Data and Centroids</div>
+    <div class="card-body text-center">
+        <p class="card-text text-start">
+            We start by choosing 3 initial centroids by hand, based on the app profiles we expect
+            to find in the data:
+        </p>
+        <ul class="text-start mb-3">
+            {% for c in initial_centroids %}
+            <li>Centroid {{ loop.index }}: Size = {{ c[0] }} MB, Rating = {{ c[1] }}</li>
+            {% endfor %}
+        </ul>
+        <img src="data:image/png;base64,{{ initial_plot }}" class="img-fluid" alt="Initial data and centroids">
+    </div>
+</div>
+
+{% for it in iterations %}
+<div class="card shadow-sm mb-4">
+    <div class="card-header bg-primary text-white">Iteration {{ it.number }}</div>
+    <div class="card-body">
+
+        <h6 class="mb-2">Distances and Cluster Assignment</h6>
+        <p class="text-muted small">Showing the first 10 of {{ it.total_rows }} apps.</p>
+        <div class="table-responsive mb-4">
+            <table class="table table-sm table-bordered text-center">
+                <thead class="table-light">
+                    <tr>
+                        <th>App</th>
+                        <th>Size (MB)</th>
+                        <th>Rating</th>
+                        <th>Dist. to C1</th>
+                        <th>Dist. to C2</th>
+                        <th>Dist. to C3</th>
+                        <th>Assigned cluster</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for row in it.table_sample %}
+                    <tr>
+                        <td>{{ row.app_name }}</td>
+                        <td>{{ row.size_mb }}</td>
+                        <td>{{ row.rating }}</td>
+                        <td>{{ row.dist_C1 }}</td>
+                        <td>{{ row.dist_C2 }}</td>
+                        <td>{{ row.dist_C3 }}</td>
+                        <td>Cluster {{ row.assigned_cluster }}</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+
+        <div class="row g-3 mb-4">
+            <div class="col-md-6">
+                <h6 class="mb-2">Updated Centroids</h6>
+                <ul class="mb-0">
+                    {% for c in it.centroids %}
+                    <li>Centroid {{ loop.index }}: Size = {{ c[0] }} MB, Rating = {{ c[1] }}</li>
+                    {% endfor %}
+                </ul>
+            </div>
+            <div class="col-md-6">
+                <h6 class="mb-2">Within-Cluster Variance</h6>
+                <p class="mb-0">{{ it.variance }}</p>
+            </div>
+        </div>
+
+        <div class="text-center">
+            <img src="data:image/png;base64,{{ it.plot }}" class="img-fluid" alt="Clusters after iteration {{ it.number }}">
+        </div>
+
+    </div>
+</div>
+{% endfor %}
+
+<div class="card shadow-sm mb-4">
+    <div class="card-header">Variance Comparison Across Iterations</div>
+    <div class="card-body">
+        <p class="card-text">
+            The within-cluster variance shows how spread out the apps are from their assigned
+            centroid. As the centroids move closer to the real center of each group, this number
+            should go down (or stabilize) with each iteration.
+        </p>
+        <table class="table table-sm table-bordered text-center mb-0" style="max-width: 400px;">
+            <thead class="table-light">
+                <tr>
+                    {% for v in variances %}
+                    <th>Iteration {{ loop.index }}</th>
+                    {% endfor %}
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    {% for v in variances %}
+                    <td>{{ v }}</td>
+                    {% endfor %}
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<div class="card shadow-sm">
+    <div class="card-header bg-dark text-white">Final Result</div>
+    <div class="card-body mb-0">
+        <div class="row g-3 mb-3">
+            {% for size in cluster_sizes %}
+            <div class="col-md-4">
+                <div class="card h-100 shadow-sm text-center">
+                    <div class="card-body">
+                        <h6 class="card-title text-muted">Cluster {{ loop.index }}</h6>
+                        <p class="mb-0">{{ size }} apps</p>
+                        <p class="text-muted small mb-0">
+                            Centroid: {{ final_centroids[loop.index0][0] }} MB, {{ final_centroids[loop.index0][1] }} rating
+                        </p>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+        <p class="card-text mb-0">
+            <em> Cluster 1 represents lightweight, well-rated apps (centroid near 15 MB / 4.5 rating) —
+    likely simple utilities or basic tools that users find satisfying despite their small size.
+    Cluster 2 represents heavy but well-rated apps (centroid near 300 MB / 4.5 rating) —
+    probably media-rich or feature-heavy apps (e.g. games, streaming) that justify their large
+    size with a strong user experience. Cluster 3 represents heavy, poorly-rated apps (centroid
+    near 250 MB / 2.8 rating) — large apps that likely suffer from performance issues, excessive
+    storage use, or a poor user experience, which is reflected in lower ratings. Looking at the
+    variance values across the three iterations, the decrease becomes progressively smaller from
+    iteration 1 to iteration 3, suggesting the centroids had largely stabilized by the third
+    iteration — running additional iterations would likely produce only minor changes to the
+    final cluster assignments.</em>
+        </p>
+    </div>
+</div>
+{% endblock %}
