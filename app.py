@@ -8,6 +8,10 @@ from flask import Flask, render_template, request
 from model import df, model, calculate_price
 from model_clustering import AppsClusteringModel
 from manual_clustering import ManualKMeans
+from reinforcement import train, GRID, START, GOAL, ACTION_NAMES
+
+
+
 
 from model_knn import (
     df_knn,
@@ -347,8 +351,21 @@ def kmeans_application():
     )
 
 
+@app.route('/reinforcement', methods=['GET', 'POST'])
+def reinforcement():
+    result = None
+    if request.method == 'POST':
+        result = train(episodes=1000)
 
-
+    return render_template(
+        'reinforcement.html',
+        result=result,
+        grid=GRID,
+        start=START,
+        goal=GOAL,
+        actions=ACTION_NAMES,
+    )
 
 if __name__ == '__main__':
-    app.run(debug=True)
+    app.run()
+    
