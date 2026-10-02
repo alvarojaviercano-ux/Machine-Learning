@@ -349,6 +349,10 @@ def kmeans_application():
         sample_rows=sample_rows,
         chart_base64=chart_base64,
     )
+    
+@app.route("/reinforcement/concepts")
+def reinforcement_concepts():
+    return render_template("reinforcement_concepts.html")    
 
 
 @app.route('/reinforcement', methods=['GET', 'POST'])
