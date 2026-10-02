@@ -1,0 +1,117 @@
+{% extends "base.html" %}
+{% block title %}Reinforcement Learning — Concepts{% endblock %}
+
+{% block content %}
+<h1 class="mb-4">Reinforcement Learning — Concepts</h1>
+
+<div class="card shadow-sm mb-4">
+    <div class="card-header bg-dark text-white">What is Reinforcement Learning?</div>
+    <div class="card-body">
+        <p class="card-text mb-0">
+            Reinforcement Learning (RL) is a type of Machine Learning where an
+            <strong>agent</strong> learns to make decisions by interacting with an
+            <strong>environment</strong>. Instead of learning from a fixed, labeled dataset
+            like Supervised Learning, the agent learns through trial and error: it takes
+            actions, observes the consequences, and gradually learns which actions lead to
+            better outcomes.
+        </p>
+    </div>
+</div>
+
+<div class="row g-4 mb-4">
+    <div class="col-md-6">
+        <div class="card h-100 shadow-sm border-primary">
+            <div class="card-title text-primary px-3 pt-3">State</div>
+            <div class="card-body pt-2">
+                <p class="card-text mb-0">
+                    A state describes the current situation of the agent within the
+                    environment — for example, its current position in a grid.
+                </p>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-6">
+        <div class="card h-100 shadow-sm border-success">
+            <div class="card-title text-success px-3 pt-3">Action</div>
+            <div class="card-body pt-2">
+                <p class="card-text mb-0">
+                    An action is a choice the agent can make at a given state — for example,
+                    moving Up, Down, Left, or Right.
+                </p>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="row g-4 mb-4">
+    <div class="col-md-6">
+        <div class="card h-100 shadow-sm border-warning">
+            <div class="card-title text-warning px-3 pt-3">Reward</div>
+            <div class="card-body pt-2">
+                <p class="card-text mb-0">
+                    A reward is the feedback the environment gives the agent after an action:
+                    a positive number for good outcomes (like reaching the goal), and a
+                    negative number for bad outcomes (like hitting a wall).
+                </p>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-6">
+        <div class="card h-100 shadow-sm border-info">
+            <div class="card-title text-info px-3 pt-3">Policy</div>
+            <div class="card-body pt-2">
+                <p class="card-text mb-0">
+                    A policy is the strategy the agent follows to decide which action to take
+                    in each state. The goal of training is to find a policy that maximizes the
+                    total reward over time.
+                </p>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="card shadow-sm mb-4">
+    <div class="card-header">What is Q-Learning?</div>
+    <div class="card-body mb-0">
+        <p class="card-text mb-0">
+            Q-Learning is a specific Reinforcement Learning algorithm. It learns a
+            <strong>Q-value</strong> for every state-action pair, representing how good it is
+            to take that action from that state, considering both the immediate reward and
+            the rewards expected afterward. Over many episodes, these Q-values are updated
+            until they stabilize, and the agent can then simply choose, at each state, the
+            action with the highest Q-value.
+        </p>
+    </div>
+</div>
+
+<div class="card shadow-sm mb-4">
+    <div class="card-header">Exploration vs. Exploitation</div>
+    <div class="card-body mb-0">
+        <p class="card-text mb-0">
+            While learning, the agent faces a trade-off: <strong>exploring</strong> means
+            trying new, possibly unknown actions to discover better strategies, while
+            <strong>exploiting</strong> means choosing the action already known to work best.
+            A common approach is to explore often at the beginning of training (when little is
+            known) and gradually shift toward exploiting as the agent learns more.
+        </p>
+    </div>
+</div>
+
+<div class="card shadow-sm">
+    <div class="card-header">How This Applies to Our Example</div>
+    <div class="card-body mb-0">
+        <p class="card-text">
+            In our application, the agent starts at a fixed position on a 4x4 grid and must
+            find its way to a goal cell, avoiding walls along the way. Each move that doesn't
+            reach the goal gives a small negative reward (encouraging shorter paths), hitting a
+            wall or leaving the grid gives a larger penalty, and reaching the goal gives a
+            large positive reward.
+        </p>
+        <p class="card-text mb-0">
+            The agent repeats this many times (episodes), gradually learning which moves lead
+            to the goal fastest. After training, we can evaluate it by letting it navigate the
+            grid using only what it learned, with no further exploration.
+        </p>
+    </div>
+</div>
+{% endblock %}
