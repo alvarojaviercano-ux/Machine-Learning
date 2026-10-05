@@ -319,8 +319,8 @@ def clustering_manual():
     )
 
 
-@app.route('/kmeans/application')
-def kmeans_application():
+@app.route('/clustering/application')
+def clustering_application():
     clustering_model = AppsClusteringModel(n_clusters=3)
     result = clustering_model.implement_clustering()
     chart_base64 = clustering_model.generate_plot(result['df'])
@@ -338,38 +338,12 @@ def kmeans_application():
         })
 
     return render_template(
-        'kmeans_application.html',
+        'clustering_application.html',
         record_count=len(df_apps),
         summary=result['summary'],
         silhouette=round(result['silhouette'], 3),
         sample_rows=sample_rows,
         chart_base64=chart_base64,
-    )
-
-
-
-
-# KMEANS CONCEPTS
-# ============================================================
-
-@app.route('/kmeans/concepts')
-def kmeans_concepts():
-    return render_template('kmeans_concepts.html')
-
-
-@app.route('/kmeans/manual')
-def kmeans_manual():
-    manual = ManualKMeans(n_iterations=3)
-    result = manual.run()
-    return render_template(
-        'kmeans_manual.html',
-        record_count=result['record_count'],
-        initial_centroids=result['initial_centroids'],
-        initial_plot=result['initial_plot'],
-        iterations=result['iterations'],
-        variances=result['variances'],
-        final_centroids=result['final_centroids'],
-        cluster_sizes=result['cluster_sizes'],
     )
 
 
