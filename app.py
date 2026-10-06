@@ -8,10 +8,20 @@ from flask import Flask, render_template, request
 from model import df, model, calculate_price
 from model_clustering import AppsClusteringModel
 from manual_clustering import ManualKMeans
-from reinforcement import train, GRID, START, GOAL, ACTION_NAMES
-
-
-
+from reinforcement import (
+    train as train_4,
+    GRID as GRID_4,
+    START as START_4,
+    GOAL as GOAL_4,
+    ACTION_NAMES as ACTION_NAMES_4,
+)
+from reinforcement_10x10 import (
+    train as train_10,
+    GRID as GRID_10,
+    START as START_10,
+    GOAL as GOAL_10,
+    ACTION_NAMES as ACTION_NAMES_10,
+)
 
 from model_knn import (
     df_knn,
@@ -349,27 +359,46 @@ def kmeans_application():
         sample_rows=sample_rows,
         chart_base64=chart_base64,
     )
-    
+
+
+# REINFORCEMENT LEARNING
+# ============================================================
+
 @app.route("/reinforcement/concepts")
 def reinforcement_concepts():
-    return render_template("reinforcement_concepts.html")    
+    return render_template("reinforcement_concepts.html")
 
 
-@app.route('/reinforcement', methods=['GET', 'POST'])
-def reinforcement():
+@app.route('/reinforcement/application', methods=['GET', 'POST'])
+def reinforcement_application():
     result = None
     if request.method == 'POST':
-        result = train(episodes=1000)
+        result = train_4(episodes=1000)
 
     return render_template(
-        'reinforcement.html',
+      'reinforcement.html',
         result=result,
-        grid=GRID,
-        start=START,
-        goal=GOAL,
-        actions=ACTION_NAMES,
+        grid=GRID_4,
+        start=START_4,
+        goal=GOAL_4,
+        actions=ACTION_NAMES_4,
     )
 
+@app.route('/reinforcement/application10', methods=['GET', 'POST'])
+def reinforcement_application10():
+    result = None
+    if request.method == 'POST':
+        result = train_10(episodes=1000)
+
+    return render_template(
+        'reinforcement_application10.html',
+        result=result,
+        grid=GRID_10,
+        start=START_10,
+        goal=GOAL_10,
+        actions=ACTION_NAMES_10,
+    )
+
+
 if __name__ == '__main__':
-    app.run()
-    
+    app.run(debug=True)

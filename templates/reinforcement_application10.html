@@ -1,24 +1,23 @@
 {% extends "base.html" %}
-{% block title %}Reinforcement Learning — Application{% endblock %}
+{% block title %}Reinforcement Learning — 10x10 Application{% endblock %}
 {% block body_class %}section-reinforcement{% endblock %}
 
 {% block content %}
 
-<!-- BACK BUTTON -->
 <a href="{{ url_for('reinforcement_concepts') }}" class="btn btn-outline-primary mb-3">
     &larr; Back to Concepts
 </a>
 
-<h1 class="mb-4">Q-Learning: Find the Exit</h1>
+<h1 class="mb-4">Q-Learning: 10x10 Grid with Danger Zones</h1>
 <p class="text-muted mb-4">
-    The agent learns, through trial and error, the best path from the start
-    to the goal while avoiding walls.
+    A larger environment with walls and danger zones. Danger zones can be
+    crossed, but cost the agent a large penalty, so a well-trained agent
+    should learn to avoid them when possible.
 </p>
 
-<!-- TRAIN BUTTON -->
 <div class="card shadow-sm mb-4">
     <div class="card-body text-center">
-        <form method="post" action="{{ url_for('reinforcement') }}" class="m-0">
+        <form method="post" action="{{ url_for('reinforcement_application10') }}" class="m-0">
             <button type="submit" class="btn btn-primary btn-lg">
                 Train for 1000 Episodes
             </button>
@@ -26,24 +25,25 @@
     </div>
 </div>
 
-<!-- GRID -->
 <div class="card shadow-sm mb-4">
-    <div class="card-header">Environment Grid</div>
+    <div class="card-header">Environment Grid (10x10)</div>
     <div class="card-body">
         <div class="table-responsive">
-            <table class="table table-bordered text-center mb-0" style="max-width: 420px; margin: 0 auto;">
-                {% for row in range(4) %}
+            <table class="table table-bordered text-center mb-0" style="max-width: 620px; margin: 0 auto;">
+                {% for row in range(10) %}
                 <tr>
-                    {% for column in range(4) %}
+                    {% for column in range(10) %}
                     {% set position = (row, column) %}
                     <td class="
                         {% if grid[row][column] == 1 %}table-dark
+                        {% elif grid[row][column] == 2 %}table-warning
                         {% elif result and position in result.path %}table-success
                         {% endif %}"
-                        style="width: 60px; height: 60px; vertical-align: middle; font-weight: 700;">
+                        style="width: 36px; height: 36px; vertical-align: middle; font-weight: 700; font-size: 0.8rem;">
                         {% if position == start %}S
                         {% elif position == goal %}G
                         {% elif grid[row][column] == 1 %}#
+                        {% elif grid[row][column] == 2 %}!
                         {% else %}·{% endif %}
                     </td>
                     {% endfor %}
@@ -55,20 +55,21 @@
             <strong>S</strong> = Start &nbsp;|&nbsp;
             <strong>G</strong> = Goal &nbsp;|&nbsp;
             <strong>#</strong> = Wall &nbsp;|&nbsp;
+            <strong>!</strong> = Danger Zone &nbsp;|&nbsp;
             <span class="badge bg-success">green cells</span> = learned path
         </p>
     </div>
 </div>
 
-<!-- RESULTS (only shown after training) -->
 {% if result %}
 
 <div class="card shadow-sm mb-4">
     <div class="card-header">Training Results</div>
     <div class="card-body">
         <p class="mb-1"><strong>Episodes:</strong> {{ result.episodes }}</p>
-        <p class="mb-1"><strong>Goal reached in:</strong> {{ result.successes }} episodes</p>
-        <p class="mb-0"><strong>Mean reward (last 100 episodes):</strong> {{ result.final_average }}</p>
+        <p class="mb-1"><strong>Goal reached in:</strong> {{ result.successes }} episodes ({{ result.success_rate }}%)</p>
+        <p class="mb-1"><strong>Mean reward (last 100 episodes):</strong> {{ result.final_average }}</p>
+        <p class="mb-0"><strong>Final exploration rate (epsilon):</strong> {{ result.final_epsilon }}</p>
     </div>
 </div>
 
@@ -77,11 +78,11 @@
     <div class="card-body">
         {% if result.reached_goal %}
         <div class="alert alert-success mb-0">
-            Goal reached in {{ result.steps|length }} moves!
+            Goal reached in {{ result.steps|length }} moves! Total evaluation reward: {{ result.total_eval_reward }}
         </div>
         {% else %}
         <div class="alert alert-danger mb-0">
-            The goal was not reached within 100 moves.
+            The goal was not reached within {{ result.steps|length }} moves. Total evaluation reward: {{ result.total_eval_reward }}
         </div>
         {% endif %}
     </div>
@@ -90,7 +91,7 @@
 <div class="card shadow-sm mb-4">
     <div class="card-header">Evaluation Steps</div>
     <div class="card-body">
-        <div class="table-responsive">
+        <div class="table-responsive" style="max-height: 400px; overflow-y: auto;">
             <table class="table table-sm table-bordered text-center mb-0">
                 <thead class="table-light">
                     <tr>
@@ -98,6 +99,7 @@
                         <th>State</th>
                         <th>Action</th>
                         <th>Next State</th>
+                        <th>Cell Type</th>
                         <th>Reward</th>
                     </tr>
                 </thead>
@@ -108,6 +110,15 @@
                         <td>{{ step_info.state }}</td>
                         <td>{{ step_info.action }}</td>
                         <td>{{ step_info.next_state }}</td>
+                        <td>
+                            {% if step_info.cell_type == 'Danger Zone' %}
+                            <span class="badge bg-warning text-dark">{{ step_info.cell_type }}</span>
+                            {% elif step_info.cell_type == 'Goal' %}
+                            <span class="badge bg-success">{{ step_info.cell_type }}</span>
+                            {% else %}
+                            {{ step_info.cell_type }}
+                            {% endif %}
+                        </td>
                         <td>{{ step_info.reward }}</td>
                     </tr>
                     {% endfor %}
@@ -120,7 +131,7 @@
 <div class="card shadow-sm">
     <div class="card-header">Learned Q-Values</div>
     <div class="card-body">
-        <div class="table-responsive">
+        <div class="table-responsive" style="max-height: 400px; overflow-y: auto;">
             <table class="table table-sm table-bordered text-center mb-0">
                 <thead class="table-light">
                     <tr>

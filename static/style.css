@@ -5,27 +5,27 @@
 
 :root {
 
-    --green-primary: #8bcfa5;
+    --green-primary: #7ec8e8;
 
-    --green-button: #62b985;
+    --green-button: #3d94d6;
 
-    --green-soft: #e8f6ed;
+    --green-soft: #e3f3fb;
 
-    --green-light: #f5fbf7;
+    --green-light: #f3fafd;
 
-    --green-dark: #285c40;
+    --green-dark: #123a5e;
 
-    --green-deep: #1f4d35;
+    --green-deep: #0d2a42;
 
-    --text-main: #263d30;
+    --text-main: #16324a;
 
-    --text-soft: #5c7064;
+    --text-soft: #4a6b85;
 
     --white: #ffffff;
 
-    --border: #d6e9dc;
+    --border: #cfe6f5;
 
-    --shadow: 0 6px 20px rgba(40, 92, 64, 0.09);
+    --shadow: 0 6px 20px rgba(18, 58, 94, 0.09);
 
     /* Section accent colors */
 
@@ -1171,4 +1171,3 @@ section img,
     }
 
 }
-
