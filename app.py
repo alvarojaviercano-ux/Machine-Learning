@@ -9,7 +9,7 @@ from model import df, model, calculate_price
 from model_clustering import AppsClusteringModel
 from manual_clustering import ManualKMeans
 from reinforcement import train, GRID, START, GOAL, ACTION_NAMES
-
+from reinforcement_10x10 import train, GRID, START, GOAL, ACTION_NAMES
 
 
 
@@ -351,21 +351,25 @@ def kmeans_application():
     )
 
 
-@app.route('/reinforcement', methods=['GET', 'POST'])
-def reinforcement():
+@app.route('/reinforcement/concepts')
+def reinforcement_concepts():
+    return render_template('reinforcement_concepts.html')
+
+
+@app.route('/reinforcement/application', methods=['GET', 'POST'])
+def reinforcement_application():
     result = None
     if request.method == 'POST':
         result = train(episodes=1000)
 
     return render_template(
-        'reinforcement.html',
+        'reinforcement_application.html',
         result=result,
         grid=GRID,
         start=START,
         goal=GOAL,
         actions=ACTION_NAMES,
     )
-
 if __name__ == '__main__':
     app.run()
     
